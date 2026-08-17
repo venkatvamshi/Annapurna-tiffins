@@ -2,433 +2,883 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Annapurna Tiffins | ಅನ್ನಪೂರ್ಣಾ ಟಿಫಿನ್ಸ್</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Tiro+Kannada&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tiro+Kannada&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #8b181b;
-      --primary-dark: #640d0f;
-      --accent: #d97706;
-      --bg-cream: #fbf7ee;
-      --card-bg: #ffffff;
-      --text-main: #2b2520;
-      --text-muted: #6b635b;
-      --border: #eedec7;
-      --tag-bg: #f5ebd7;
+      --primary: #7a1518;
+      --primary-dark: #580d10;
+      --gold: #d97706;
+      --gold-light: #fef3c7;
+      --bg: #f8f6f0;
+      --surface: #ffffff;
+      --text: #1f1d1a;
+      --text-muted: #736b63;
+      --border: #ede4d8;
+      --veg-green: #16a34a;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg-cream);
-      color: var(--text-main);
-      line-height: 1.5;
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 110px;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .kannada {
-      font-family: 'Tiro Kannada', serif;
-      font-size: 0.9em;
-      color: var(--text-muted);
-    }
+    .kannada { font-family: 'Tiro Kannada', serif; }
 
+    /* Header */
     header {
       background: linear-gradient(135deg, var(--primary-dark), var(--primary));
       color: #fff;
       text-align: center;
-      padding: 3rem 1.5rem 2.5rem;
-      border-bottom: 4px solid var(--accent);
+      padding: 1.6rem 1rem 1.3rem;
+      border-bottom: 3px solid var(--gold);
     }
-
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.15);
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
     header h1 {
       font-family: 'Cinzel', serif;
-      font-size: 2.75rem;
-      letter-spacing: 2px;
-      margin-bottom: 0.25rem;
+      font-size: 1.75rem;
+      letter-spacing: 1.5px;
     }
-
-    header .sub-header {
-      font-family: 'Tiro Kannada', serif;
-      font-size: 1.6rem;
+    header .sub {
+      font-size: 1.05rem;
       color: #fcd34d;
-      margin-bottom: 0.5rem;
     }
 
-    header p {
-      font-size: 1rem;
-      opacity: 0.9;
-      letter-spacing: 0.5px;
+    /* Fast Search */
+    .search-wrapper {
+      padding: 0.75rem 1rem 0;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.6rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 0.92rem;
+      font-family: inherit;
+      outline: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .search-box input:focus { border-color: var(--primary); }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: var(--text-muted);
+      width: 18px;
+      height: 18px;
     }
 
-    /* Category Filter Navigation */
+    /* Category Nav */
     .filter-nav {
       position: sticky;
       top: 0;
-      background: #ffffff;
-      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      padding: 0.7rem 1rem;
       display: flex;
-      justify-content: center;
       gap: 0.5rem;
       overflow-x: auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      z-index: 50;
       border-bottom: 1px solid var(--border);
+      scrollbar-width: none;
     }
-
+    .filter-nav::-webkit-scrollbar { display: none; }
     .filter-btn {
-      background: none;
+      background: var(--surface);
       border: 1px solid var(--border);
-      padding: 0.5rem 1rem;
+      padding: 0.45rem 0.9rem;
       border-radius: 9999px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text-main);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s ease;
     }
-
-    .filter-btn:hover,
     .filter-btn.active {
       background: var(--primary);
       color: #fff;
       border-color: var(--primary);
     }
 
-    /* Container & Layout */
+    /* Layout */
     .container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1.25rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 2rem;
+      max-width: 700px;
+      margin: 1.2rem auto;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.3rem;
     }
 
     .menu-card {
-      background: var(--card-bg);
-      border-radius: 14px;
+      background: var(--surface);
+      border-radius: 16px;
       border: 1px solid var(--border);
-      padding: 1.5rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
-      display: flex;
-      flex-direction: column;
+      padding: 1.2rem;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.03);
     }
-
     .card-header {
-      border-bottom: 2px dashed var(--border);
-      padding-bottom: 0.75rem;
-      margin-bottom: 1rem;
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
+      border-bottom: 2px dashed var(--border);
+      padding-bottom: 0.65rem;
+      margin-bottom: 0.65rem;
     }
-
     .card-header h2 {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       color: var(--primary);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
-
     .timing-badge {
-      background: var(--tag-bg);
-      color: var(--primary-dark);
-      font-size: 0.72rem;
+      background: var(--gold-light);
+      color: #92400e;
+      font-size: 0.68rem;
       font-weight: 700;
-      padding: 0.25rem 0.6rem;
+      padding: 0.2rem 0.5rem;
       border-radius: 6px;
-      text-transform: uppercase;
-      border: 1px solid #e0cdb2;
+      border: 1px solid #fde68a;
     }
 
-    .menu-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-    }
-
+    .menu-list { list-style: none; }
     .menu-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #f4ede4;
+    }
+    .menu-item:last-child { border-bottom: none; }
+    
+    .item-left {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      flex: 1;
+      padding-right: 8px;
+    }
+    .veg-icon {
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid var(--veg-green);
+      padding: 2px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 3px;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+    .veg-icon::after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: var(--veg-green);
+      border-radius: 50%;
+    }
+
+    .item-info { display: flex; flex-direction: column; }
+    .name-en {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .name-kn {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .item-desc {
+      font-size: 0.75rem;
+      color: #78716c;
+      margin-top: 2px;
+    }
+    .tag-highlight {
+      font-size: 0.65rem;
+      background: #fee2e2;
+      color: #991b1b;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      margin-left: 4px;
+    }
+
+    .item-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+      min-width: 70px;
+    }
+    .item-price {
+      font-weight: 800;
+      color: var(--primary-dark);
       font-size: 0.95rem;
     }
 
-    .item-names {
+    /* Stepper Controls */
+    .stepper {
       display: flex;
-      flex-direction: column;
-      padding-right: 1rem;
+      align-items: center;
+      background: #fff;
+      border: 1.5px solid var(--primary);
+      border-radius: 6px;
+      overflow: hidden;
     }
-
-    .name-en {
-      font-weight: 600;
-      color: var(--text-main);
+    .stepper button {
+      background: #fdf2f2;
+      border: none;
+      color: var(--primary);
+      font-size: 1rem;
+      font-weight: 800;
+      width: 28px;
+      height: 26px;
+      cursor: pointer;
     }
-
-    .name-kn {
-      font-size: 0.85rem;
-    }
-
-    .item-desc {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 0.15rem;
-    }
-
-    .item-price {
+    .stepper .count {
+      min-width: 22px;
+      text-align: center;
+      font-size: 0.82rem;
       font-weight: 700;
       color: var(--primary-dark);
-      font-size: 1rem;
-      min-width: 45px;
-      text-align: right;
+    }
+    .add-btn {
+      background: #fff;
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 6px;
+      cursor: pointer;
     }
 
+    /* Bottom Summary Bar */
+    .order-bar {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 24px);
+      max-width: 600px;
+      background: #1e293b;
+      color: #fff;
+      padding: 0.75rem 1.1rem;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+    .order-bar.hidden {
+      display: none !important;
+    }
+    .slip-btn {
+      background: #f59e0b;
+      color: #000;
+      border: none;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 0.65rem 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* Digital Summary Slip Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      z-index: 9999;
+    }
+    .modal-overlay.active {
+      display: flex !important;
+    }
+    .receipt-card {
+      background: #fff;
+      width: 100%;
+      max-width: 380px;
+      border-radius: 16px;
+      padding: 22px 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      border: 2px dashed #caa049;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .receipt-header {
+      text-align: center;
+      border-bottom: 2px dashed #ddd;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+    
+    /* Pay at Counter Instruction Banner */
+    .counter-alert-banner {
+      background: #fef2f2;
+      border: 1.5px solid #f87171;
+      color: #991b1b;
+      padding: 8px 10px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .counter-alert-banner strong {
+      display: block;
+      font-size: 0.86rem;
+      letter-spacing: 0.3px;
+    }
+    .counter-alert-banner span {
+      display: block;
+      font-size: 0.76rem;
+      margin-top: 2px;
+      opacity: 0.95;
+    }
+
+    .receipt-items {
+      max-height: 180px;
+      overflow-y: auto;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
+    }
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      padding: 3px 0;
+    }
+    .tax-breakdown {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-bottom: 1px dashed #eee;
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+    }
+    .tax-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 0;
+    }
+    .receipt-total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.15rem;
+      font-weight: 800;
+      padding-top: 4px;
+    }
+    .close-modal-btn {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      margin-top: 14px;
+      cursor: pointer;
+    }
+
+    /* Footer & Review Link */
     footer {
       text-align: center;
-      padding: 2.5rem 1rem;
-      background: #f1ebd8;
-      border-top: 1px solid var(--border);
-      font-size: 0.875rem;
+      padding: 1.5rem 1rem 3.5rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
-      margin-top: 3rem;
     }
-
-    @media (max-width: 600px) {
-      header h1 { font-size: 2rem; }
-      header .sub-header { font-size: 1.3rem; }
-      .container { grid-template-columns: 1fr; }
+    .review-footer-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      color: #1f1d1a;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-weight: 700;
+      margin-top: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="sub-header">ಅನ್ನಪೂರ್ಣಾ ಟಿಫಿನ್ಸ್</div>
+    <div class="header-badge">🟢 Pure Vegetarian Tiffins</div>
+    <div class="sub kannada">ಅನ್ನಪೂರ್ಣಾ ಟಿಫಿನ್ಸ್</div>
     <h1>ANNAPURNA TIFFINS</h1>
-    <p>Authentic South Indian Tiffins, Meals & Delicacies</p>
   </header>
 
-  <nav class="filter-nav" id="categoryNav">
-    <button class="filter-btn active" onclick="filterCategory('all')">All Items</button>
-    <button class="filter-btn" onclick="filterCategory('beverages')">Beverages</button>
-    <button class="filter-btn" onclick="filterCategory('breakfast')">Breakfast</button>
-    <button class="filter-btn" onclick="filterCategory('dosa')">Dosas</button>
-    <button class="filter-btn" onclick="filterCategory('special-dosa')">Special Dosas</button>
-    <button class="filter-btn" onclick="filterCategory('pesarattu')">Pesarattu</button>
-    <button class="filter-btn" onclick="filterCategory('uthappam')">Uthappam</button>
-    <button class="filter-btn" onclick="filterCategory('lunch')">Lunch & Meals</button>
-    <button class="filter-btn" onclick="filterCategory('roti')">Roti & Breads</button>
+  <!-- Search -->
+  <div class="search-wrapper">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Search dishes (e.g. Masala Dosa, Meals, Coffee)..." oninput="searchDishes()">
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <nav class="filter-nav">
+    <button class="filter-btn active" onclick="filterCategory('all', this)">All</button>
+    <button class="filter-btn" onclick="filterCategory('breakfast', this)">Breakfast</button>
+    <button class="filter-btn" onclick="filterCategory('dosa', this)">Dosas</button>
+    <button class="filter-btn" onclick="filterCategory('special-dosa', this)">Special Dosa</button>
+    <button class="filter-btn" onclick="filterCategory('pesarattu', this)">Pesarattu</button>
+    <button class="filter-btn" onclick="filterCategory('uthappam', this)">Uthappam</button>
+    <button class="filter-btn" onclick="filterCategory('lunch', this)">Meals</button>
+    <button class="filter-btn" onclick="filterCategory('roti', this)">Roti</button>
+    <button class="filter-btn" onclick="filterCategory('beverages', this)">Beverages</button>
   </nav>
 
+  <!-- Menu List -->
   <main class="container" id="menuContainer">
-
-    <!-- BEVERAGES -->
-    <section class="menu-card" data-category="beverages">
-      <div class="card-header">
-        <h2>Beverages <span class="kannada">/ ಬಾವರೇಜಸ್</span></h2>
-      </div>
-      <ul class="menu-list">
-        <li class="menu-item"><div class="item-names"><span class="name-en">Milk</span><span class="name-kn kannada">ಹಾಲು</span></div><span class="item-price">₹20</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Coffee</span><span class="name-kn kannada">ಕಾಫಿ</span></div><span class="item-price">₹25</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Tea</span><span class="name-kn kannada">ಟೀ</span></div><span class="item-price">₹20</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Lemon Tea</span><span class="name-kn kannada">ನಿಂಬೆ ಟೀ</span></div><span class="item-price">₹20</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Ginger Coffee</span><span class="name-kn kannada">ಶುಂಠಿ ಕಾಫಿ</span></div><span class="item-price">₹25</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Badam Milk</span><span class="name-kn kannada">ಬಾದಾಮ್ ಹಾಲು</span></div><span class="item-price">₹25</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Bournvita</span><span class="name-kn kannada">ಬೋರ್ನ್‌ವಿಟಾ</span></div><span class="item-price">₹30</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Horlicks</span><span class="name-kn kannada">ಹಾರ್ಲಿಕ್ಸ್</span></div><span class="item-price">₹30</span></li>
-      </ul>
-    </section>
 
     <!-- BREAKFAST -->
     <section class="menu-card" data-category="breakfast">
       <div class="card-header">
-        <h2>Breakfast <span class="kannada">/ ತಿಂಡಿಗಳು</span></h2>
+        <h2>Breakfast <span class="kannada" style="font-size:0.9rem; color:var(--text-muted)">/ ತಿಂಡಿಗಳು</span></h2>
         <span class="timing-badge">7:00 AM – 11:30 AM</span>
       </div>
       <ul class="menu-list">
-        <li class="menu-item"><div class="item-names"><span class="name-en">Idly (2)</span><span class="name-kn kannada">ಇಡ್ಲಿ (2)</span></div><span class="item-price">₹40</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Single Idly (3 pieces)</span><span class="name-kn kannada">ಸಿಂಗಲ್ ಇಡ್ಲಿ (3 ಪೀಸ್)</span></div><span class="item-price">₹60</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Mini / Button Idly</span><span class="name-kn kannada">ಮಿನಿ / ಬಟನ್ ಇಡ್ಲಿ</span></div><span class="item-price">₹50</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Thatta Idly (1)</span><span class="name-kn kannada">ತಟ್ಟೆ ಇಡ್ಲಿ (1)</span></div><span class="item-price">₹40</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Ghee Podi Idly</span><span class="name-kn kannada">ಗೀ ಪೊಡಿ ಇಡ್ಲಿ</span></div><span class="item-price">₹70</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Idly (2) / Vada</span><span class="name-kn kannada">ಇಡ್ಲಿ (2) / ವಡಾ</span></div><span class="item-price">₹70</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Rava Idly</span><span class="name-kn kannada">ರವಾ ಇಡ್ಲಿ</span></div><span class="item-price">₹55</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Vada (2 pieces)</span><span class="name-kn kannada">ವಡಾ (2 ಪೀಸ್)</span></div><span class="item-price">₹60</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Single Idly</span><span class="name-kn kannada">ಸಿಂಗಲ್ ಇಡ್ಲಿ</span></div><span class="item-price">₹25</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Single Vada</span><span class="name-kn kannada">ಸಿಂಗಲ್ ವಡಾ</span></div><span class="item-price">₹35</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Kesari Bath</span><span class="name-kn kannada">ಕೇಸರಿ ಬಾತ್</span></div><span class="item-price">₹45</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Upma</span><span class="name-kn kannada">ಉಪ್ಮಾ</span></div><span class="item-price">₹40</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Pongal</span><span class="name-kn kannada">ಪೊಂಗಲ್</span></div><span class="item-price">₹60</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Ghee Pongal</span><span class="name-kn kannada">ಗೀ ಪೊಂಗಲ್</span></div><span class="item-price">₹70</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Poori-Aloo Sagoo (2 pcs)</span><span class="name-kn kannada">ಪೂರಿ - ಆಲೂ ಸಾಗು (2 ಪೀಸ್)</span></div><span class="item-price">₹60</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Chow Chow Bath</span><span class="name-kn kannada">ಚೌ ಚೌ ಬಾತ್</span></div><span class="item-price">₹80</span></li>
+        <li class="menu-item" data-name="Idly (2) ಇಡ್ಲಿ" data-id="idly-2" data-title="Idly (2)" data-price="40"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Idly (2)</span><span class="name-kn kannada">ಇಡ್ಲಿ (2)</span></div></div><div class="item-right"><span class="item-price">₹40</span><div id="btn-idly-2"><button class="add-btn" onclick="addItem('idly-2', 'Idly (2)', 40)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Single Idly (3 pieces) ಸಿಂಗಲ್ ಇಡ್ಲಿ" data-id="single-idly-3" data-title="Single Idly (3 pcs)" data-price="60"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Single Idly (3 pieces)</span><span class="name-kn kannada">ಸಿಂಗಲ್ ಇಡ್ಲಿ (3 ಪೀಸ್)</span></div></div><div class="item-right"><span class="item-price">₹60</span><div id="btn-single-idly-3"><button class="add-btn" onclick="addItem('single-idly-3', 'Single Idly (3 pcs)', 60)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Mini Button Idly ಮಿನಿ ಇಡ್ಲಿ" data-id="mini-idly" data-title="Mini / Button Idly" data-price="50"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Mini / Button Idly</span><span class="name-kn kannada">ಮಿನಿ / ಬಟನ್ ಇಡ್ಲಿ</span></div></div><div class="item-right"><span class="item-price">₹50</span><div id="btn-mini-idly"><button class="add-btn" onclick="addItem('mini-idly', 'Mini / Button Idly', 50)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Thatta Idly (1) ತಟ್ಟೆ ಇಡ್ಲಿ" data-id="thatta-idly" data-title="Thatta Idly (1)" data-price="40"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Thatta Idly (1)</span><span class="name-kn kannada">ತಟ್ಟೆ ಇಡ್ಲಿ (1)</span></div></div><div class="item-right"><span class="item-price">₹40</span><div id="btn-thatta-idly"><button class="add-btn" onclick="addItem('thatta-idly', 'Thatta Idly (1)', 40)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Ghee Podi Idly ಗೀ ಪೊಡಿ ಇಡ್ಲಿ" data-id="ghee-podi-idly" data-title="Ghee Podi Idly" data-price="70"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Ghee Podi Idly <span class="tag-highlight">Popular</span></span><span class="name-kn kannada">ಗೀ ಪೊಡಿ ಇಡ್ಲಿ</span></div></div><div class="item-right"><span class="item-price">₹70</span><div id="btn-ghee-podi-idly"><button class="add-btn" onclick="addItem('ghee-podi-idly', 'Ghee Podi Idly', 70)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Idly (2) / Vada ಇಡ್ಲಿ ವಡಾ" data-id="idly-vada" data-title="Idly (2) / Vada" data-price="70"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Idly (2) / Vada</span><span class="name-kn kannada">ಇಡ್ಲಿ (2) / ವಡಾ</span></div></div><div class="item-right"><span class="item-price">₹70</span><div id="btn-idly-vada"><button class="add-btn" onclick="addItem('idly-vada', 'Idly (2) / Vada', 70)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Rava Idly ರವಾ ಇಡ್ಲಿ" data-id="rava-idly" data-title="Rava Idly" data-price="55"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Rava Idly</span><span class="name-kn kannada">ರವಾ ಇಡ್ಲಿ</span></div></div><div class="item-right"><span class="item-price">₹55</span><div id="btn-rava-idly"><button class="add-btn" onclick="addItem('rava-idly', 'Rava Idly', 55)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Vada (2 pieces) ವಡಾ" data-id="vada-2" data-title="Vada (2 pcs)" data-price="60"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Vada (2 pieces)</span><span class="name-kn kannada">ವಡಾ (2 ಪೀಸ್)</span></div></div><div class="item-right"><span class="item-price">₹60</span><div id="btn-vada-2"><button class="add-btn" onclick="addItem('vada-2', 'Vada (2 pcs)', 60)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Single Idly ಸಿಂಗಲ್ ಇಡ್ಲಿ" data-id="single-idly" data-title="Single Idly" data-price="25"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Single Idly</span><span class="name-kn kannada">ಸಿಂಗಲ್ ಇಡ್ಲಿ</span></div></div><div class="item-right"><span class="item-price">₹25</span><div id="btn-single-idly"><button class="add-btn" onclick="addItem('single-idly', 'Single Idly', 25)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Single Vada ಸಿಂಗಲ್ ವಡಾ" data-id="single-vada" data-title="Single Vada" data-price="35"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Single Vada</span><span class="name-kn kannada">ಸಿಂಗಲ್ ವಡಾ</span></div></div><div class="item-right"><span class="item-price">₹35</span><div id="btn-single-vada"><button class="add-btn" onclick="addItem('single-vada', 'Single Vada', 35)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Kesari Bath ಕೇಸರಿ ಬಾತ್" data-id="kesari-bath" data-title="Kesari Bath" data-price="45"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Kesari Bath</span><span class="name-kn kannada">ಕೇಸರಿ ಬಾತ್</span></div></div><div class="item-right"><span class="item-price">₹45</span><div id="btn-kesari-bath"><button class="add-btn" onclick="addItem('kesari-bath', 'Kesari Bath', 45)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Upma ಉಪ್ಮಾ" data-id="upma" data-title="Upma" data-price="40"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Upma</span><span class="name-kn kannada">ಉಪ್ಮಾ</span></div></div><div class="item-right"><span class="item-price">₹40</span><div id="btn-upma"><button class="add-btn" onclick="addItem('upma', 'Upma', 40)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Pongal ಪೊಂಗಲ್" data-id="pongal" data-title="Pongal" data-price="60"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Pongal</span><span class="name-kn kannada">ಪೊಂಗಲ್</span></div></div><div class="item-right"><span class="item-price">₹60</span><div id="btn-pongal"><button class="add-btn" onclick="addItem('pongal', 'Pongal', 60)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Ghee Pongal ಗೀ ಪೊಂಗಲ್" data-id="ghee-pongal" data-title="Ghee Pongal" data-price="70"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Ghee Pongal</span><span class="name-kn kannada">ಗೀ ಪೊಂಗಲ್</span></div></div><div class="item-right"><span class="item-price">₹70</span><div id="btn-ghee-pongal"><button class="add-btn" onclick="addItem('ghee-pongal', 'Ghee Pongal', 70)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Poori-Aloo Sagoo (2 Piece) ಪೂರಿ ಆಲೂ ಸಾಗು" data-id="poori-sagoo" data-title="Poori-Aloo Sagoo (2 pcs)" data-price="60"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Poori-Aloo Sagoo (2 pcs)</span><span class="name-kn kannada">ಪೂರಿ - ಆಲೂ ಸಾಗು</span></div></div><div class="item-right"><span class="item-price">₹60</span><div id="btn-poori-sagoo"><button class="add-btn" onclick="addItem('poori-sagoo', 'Poori-Aloo Sagoo', 60)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Chow Chow Bath ಚೌ ಚೌ ಬಾತ್" data-id="chow-chow-bath" data-title="Chow Chow Bath" data-price="80"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Chow Chow Bath</span><span class="name-kn kannada">ಚೌ ಚೌ ಬಾತ್</span></div></div><div class="item-right"><span class="item-price">₹80</span><div id="btn-chow-chow-bath"><button class="add-btn" onclick="addItem('chow-chow-bath', 'Chow Chow Bath', 80)">+ Add</button></div></div></li>
       </ul>
     </section>
 
-    <!-- DOSA VARIETIES -->
+    <!-- DOSAS -->
     <section class="menu-card" data-category="dosa">
       <div class="card-header">
-        <h2>Dosa Varieties <span class="kannada">/ ದೋಸೆ ವೆರೈಟಿಸ್</span></h2>
+        <h2>Dosa Varieties <span class="kannada" style="font-size:0.9rem; color:var(--text-muted)">/ ದೋಸೆ</span></h2>
       </div>
       <ul class="menu-list">
-        <li class="menu-item"><div class="item-names"><span class="name-en">Plain Dosa</span><span class="name-kn kannada">ಪ್ಲೇನ್ ದೋಸೆ</span></div><span class="item-price">₹60</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Plain Podi Dosa</span><span class="name-kn kannada">ಪ್ಲೇನ್ ಪೊಡಿ ದೋಸೆ</span></div><span class="item-price">₹80</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Ghee Karam Podi Dosa</span><span class="item-desc">(Rayalaseema Style)</span><span class="name-kn kannada">ಗೀ ಕರಮ್ ಪೊಡಿ ದೋಸೆ</span></div><span class="item-price">₹100</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Masala Dosa</span><span class="name-kn kannada">ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹80</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Podi Masala Dosa</span><span class="name-kn kannada">ಪೊಡಿ ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹90</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Ghee Podi Masala Dosa</span><span class="name-kn kannada">ಗೀ ಪೊಡಿ ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹120</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Onion Kaara Dosa</span><span class="name-kn kannada">ಈರುಳ್ಳಿ ಖಾರಾ ದೋಸೆ</span></div><span class="item-price">₹75</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Set Dosa</span><span class="name-kn kannada">ಸೆಟ್ ದೋಸೆ</span></div><span class="item-price">₹80</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Mysore Masala Dosa</span><span class="name-kn kannada">ಮೈಸೂರು ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹110</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Tomato Dosa</span><span class="name-kn kannada">ಟೊಮೆಟೊ ದೋಸೆ</span></div><span class="item-price">₹80</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Butter Plain Dosa</span><span class="name-kn kannada">ಬಟರ್ ಪ್ಲೇನ್ ದೋಸೆ</span></div><span class="item-price">₹100</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Butter Open Dosa</span><span class="name-kn kannada">ಬಟರ್ ಓಪನ್ ದೋಸೆ</span></div><span class="item-price">₹110</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Butter Masala Dosa</span><span class="name-kn kannada">ಬಟರ್ ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹120</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Cheese Plain Dosa</span><span class="name-kn kannada">ಚೀಸ್ ಪ್ಲೇನ್ ದೋಸೆ</span></div><span class="item-price">₹100</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Cheese Masala Dosa</span><span class="name-kn kannada">ಚೀಸ್ ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹130</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Paneer Masala Dosa</span><span class="name-kn kannada">ಪನ್ನೀರ್ ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹120</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Paper Plain Dosa</span><span class="name-kn kannada">ಪೇಪರ್ ಪ್ಲೇನ್ ದೋಸೆ</span></div><span class="item-price">₹100</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Paper Masala Dosa</span><span class="name-kn kannada">ಪೇಪರ್ ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹110</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Paper Butter Masala Dosa</span><span class="name-kn kannada">ಪೇಪರ್ ಬಟರ್ ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹120</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Rava Dosa Plain</span><span class="name-kn kannada">ರವಾ ದೋಸೆ ಪ್ಲೇನ್</span></div><span class="item-price">₹90</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Rava Masala Dosa</span><span class="name-kn kannada">ರವಾ ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹110</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Onion Rava Masala Dosa</span><span class="name-kn kannada">ಈರುಳ್ಳಿ ರವಾ ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹120</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Rava Onion Dosa</span><span class="name-kn kannada">ರವಾ ಈರುಳ್ಳಿ ದೋಸೆ</span></div><span class="item-price">₹100</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Mushroom Masala Dosa</span><span class="name-kn kannada">ಮಶ್ರೂಮ್ ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹120</span></li>
+        <li class="menu-item" data-name="Plain Dosa ಪ್ಲೇನ್ ದೋಸೆ" data-id="plain-dosa" data-title="Plain Dosa" data-price="60"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Plain Dosa</span><span class="name-kn kannada">ಪ್ಲೇನ್ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹60</span><div id="btn-plain-dosa"><button class="add-btn" onclick="addItem('plain-dosa', 'Plain Dosa', 60)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Plain Podi Dosa ಪ್ಲೇನ್ ಪೊಡಿ ದೋಸೆ" data-id="plain-podi-dosa" data-title="Plain Podi Dosa" data-price="80"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Plain Podi Dosa</span><span class="name-kn kannada">ಪ್ಲೇನ್ ಪೊಡಿ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹80</span><div id="btn-plain-podi-dosa"><button class="add-btn" onclick="addItem('plain-podi-dosa', 'Plain Podi Dosa', 80)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Ghee Karam Podi Dosa Rayalaseema Style ಗೀ ಕರಮ್ ಪೊಡಿ ದೋಸೆ" data-id="ghee-karam-podi" data-title="Ghee Karam Podi Dosa" data-price="100"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Ghee Karam Podi Dosa <span class="tag-highlight">Rayalaseema</span></span><span class="name-kn kannada">ಗೀ ಕರಮ್ ಪೊಡಿ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹100</span><div id="btn-ghee-karam-podi"><button class="add-btn" onclick="addItem('ghee-karam-podi', 'Ghee Karam Podi Dosa', 100)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Masala Dosa ಮಸಾಲ ದೋಸೆ" data-id="masala-dosa" data-title="Masala Dosa" data-price="80"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Masala Dosa</span><span class="name-kn kannada">ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹80</span><div id="btn-masala-dosa"><button class="add-btn" onclick="addItem('masala-dosa', 'Masala Dosa', 80)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Podi Masala Dosa ಪೊಡಿ ಮಸಾಲ ದೋಸೆ" data-id="podi-masala-dosa" data-title="Podi Masala Dosa" data-price="90"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Podi Masala Dosa</span><span class="name-kn kannada">ಪೊಡಿ ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹90</span><div id="btn-podi-masala-dosa"><button class="add-btn" onclick="addItem('podi-masala-dosa', 'Podi Masala Dosa', 90)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Ghee Podi Masala Dosa ಗೀ ಪೊಡಿ ಮಸಾಲ ದೋಸೆ" data-id="ghee-podi-masala" data-title="Ghee Podi Masala Dosa" data-price="120"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Ghee Podi Masala Dosa</span><span class="name-kn kannada">ಗೀ ಪೊಡಿ ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹120</span><div id="btn-ghee-podi-masala"><button class="add-btn" onclick="addItem('ghee-podi-masala', 'Ghee Podi Masala Dosa', 120)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Onion Kaara Dosa ಈರುಳ್ಳಿ ಖಾರಾ ದೋಸೆ" data-id="onion-karam-dosa" data-title="Onion Kaara Dosa" data-price="75"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Onion Kaara Dosa</span><span class="name-kn kannada">ಈರುಳ್ಳಿ ಖಾರಾ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹75</span><div id="btn-onion-karam-dosa"><button class="add-btn" onclick="addItem('onion-karam-dosa', 'Onion Kaara Dosa', 75)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Set Dosa ಸೆಟ್ ದೋಸೆ" data-id="set-dosa" data-title="Set Dosa" data-price="80"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Set Dosa</span><span class="name-kn kannada">ಸೆಟ್ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹80</span><div id="btn-set-dosa"><button class="add-btn" onclick="addItem('set-dosa', 'Set Dosa', 80)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Mysore Masala Dosa ಮೈಸೂರು ಮಸಾಲ ದೋಸೆ" data-id="mysore-masala" data-title="Mysore Masala Dosa" data-price="110"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Mysore Masala Dosa</span><span class="name-kn kannada">ಮೈಸೂರು ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹110</span><div id="btn-mysore-masala"><button class="add-btn" onclick="addItem('mysore-masala', 'Mysore Masala Dosa', 110)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Tomato Dosa ಟೊಮೆಟೊ ದೋಸೆ" data-id="tomato-dosa" data-title="Tomato Dosa" data-price="80"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Tomato Dosa</span><span class="name-kn kannada">ಟೊಮೆಟೊ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹80</span><div id="btn-tomato-dosa"><button class="add-btn" onclick="addItem('tomato-dosa', 'Tomato Dosa', 80)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Butter Plain Dosa package ಬೆಣ್ಣೆ ದೋಸೆ" data-id="butter-plain-dosa" data-title="Butter Plain Dosa" data-price="100"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Butter Plain Dosa</span><span class="name-kn kannada">ಬಟರ್ ಪ್ಲೇನ್ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹100</span><div id="btn-butter-plain-dosa"><button class="add-btn" onclick="addItem('butter-plain-dosa', 'Butter Plain Dosa', 100)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Butter Open Dosa ಬಟರ್ ಓಪನ್ ದೋಸೆ" data-id="butter-open-dosa" data-title="Butter Open Dosa" data-price="110"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Butter Open Dosa</span><span class="name-kn kannada">ಬಟರ್ ಓಪನ್ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹110</span><div id="btn-butter-open-dosa"><button class="add-btn" onclick="addItem('butter-open-dosa', 'Butter Open Dosa', 110)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Butter Masala Dosa ಬಟರ್ ಮಸಾಲ ದೋಸೆ" data-id="butter-masala" data-title="Butter Masala Dosa" data-price="120"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Butter Masala Dosa</span><span class="name-kn kannada">ಬಟರ್ ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹120</span><div id="btn-butter-masala"><button class="add-btn" onclick="addItem('butter-masala', 'Butter Masala Dosa', 120)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Cheese Plain Dosa ಚೀಸ್ ಪ್ಲೇನ್ ದೋಸೆ" data-id="cheese-plain-dosa" data-title="Cheese Plain Dosa" data-price="100"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Cheese Plain Dosa</span><span class="name-kn kannada">ಚೀಸ್ ಪ್ಲೇನ್ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹100</span><div id="btn-cheese-plain-dosa"><button class="add-btn" onclick="addItem('cheese-plain-dosa', 'Cheese Plain Dosa', 100)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Cheese Masala Dosa ಚೀಸ್ ಮಸಾಲ ದೋಸೆ" data-id="cheese-masala-dosa" data-title="Cheese Masala Dosa" data-price="130"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Cheese Masala Dosa</span><span class="name-kn kannada">ಚೀಸ್ ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹130</span><div id="btn-cheese-masala-dosa"><button class="add-btn" onclick="addItem('cheese-masala-dosa', 'Cheese Masala Dosa', 130)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Paneer Masala Dosa ಪನ್ನೀರ್ ಮಸಾಲ ದೋಸೆ" data-id="paneer-masala-dosa" data-title="Paneer Masala Dosa" data-price="120"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Paneer Masala Dosa</span><span class="name-kn kannada">ಪನ್ನೀರ್ ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹120</span><div id="btn-paneer-masala-dosa"><button class="add-btn" onclick="addItem('paneer-masala-dosa', 'Paneer Masala Dosa', 120)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Paper Plain Dosa ಪೇಪರ್ ಪ್ಲೇನ್ ದೋಸೆ" data-id="paper-plain-dosa" data-title="Paper Plain Dosa" data-price="100"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Paper Plain Dosa</span><span class="name-kn kannada">ಪೇಪರ್ ಪ್ಲೇನ್ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹100</span><div id="btn-paper-plain-dosa"><button class="add-btn" onclick="addItem('paper-plain-dosa', 'Paper Plain Dosa', 100)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Paper Masala Dosa ಪೇಪರ್ ಮಸಾಲ ದೋಸೆ" data-id="paper-masala-dosa" data-title="Paper Masala Dosa" data-price="110"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Paper Masala Dosa</span><span class="name-kn kannada">ಪೇಪರ್ ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹110</span><div id="btn-paper-masala-dosa"><button class="add-btn" onclick="addItem('paper-masala-dosa', 'Paper Masala Dosa', 110)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Paper Butter Masala Dosa ಪೇಪರ್ ಬಟರ್ ಮಸಾಲ ದೋಸೆ" data-id="paper-butter-masala" data-title="Paper Butter Masala Dosa" data-price="120"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Paper Butter Masala Dosa</span><span class="name-kn kannada">ಪೇಪರ್ ಬಟರ್ ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹120</span><div id="btn-paper-butter-masala"><button class="add-btn" onclick="addItem('paper-butter-masala', 'Paper Butter Masala', 120)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Rava Dosa Plain ರವಾ ದೋಸೆ ಪ್ಲೇನ್" data-id="rava-dosa-plain" data-title="Rava Dosa Plain" data-price="90"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Rava Dosa Plain</span><span class="name-kn kannada">ರವಾ ದೋಸೆ ಪ್ಲೇನ್</span></div></div><div class="item-right"><span class="item-price">₹90</span><div id="btn-rava-dosa-plain"><button class="add-btn" onclick="addItem('rava-dosa-plain', 'Rava Dosa Plain', 90)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Rava Masala Dosa ರವಾ ಮಸಾಲ ದೋಸೆ" data-id="rava-masala-dosa" data-title="Rava Masala Dosa" data-price="110"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Rava Masala Dosa</span><span class="name-kn kannada">ರವಾ ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹110</span><div id="btn-rava-masala-dosa"><button class="add-btn" onclick="addItem('rava-masala-dosa', 'Rava Masala Dosa', 110)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Onion Rava Masala Dosa ಈರುಳ್ಳಿ ರವಾ ಮಸಾಲ ದೋಸೆ" data-id="onion-rava-masala" data-title="Onion Rava Masala Dosa" data-price="120"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Onion Rava Masala Dosa</span><span class="name-kn kannada">ಈರುಳ್ಳಿ ರವಾ ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹120</span><div id="btn-onion-rava-masala"><button class="add-btn" onclick="addItem('onion-rava-masala', 'Onion Rava Masala', 120)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Rava Onion Dosa ರವಾ ಈರುಳ್ಳಿ ದೋಸೆ" data-id="rava-onion-dosa" data-title="Rava Onion Dosa" data-price="100"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Rava Onion Dosa</span><span class="name-kn kannada">ರವಾ ಈರುಳ್ಳಿ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹100</span><div id="btn-rava-onion-dosa"><button class="add-btn" onclick="addItem('rava-onion-dosa', 'Rava Onion Dosa', 100)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Mushroom Masala Dosa ಮಶ್ರೂಮ್ ಮಸಾಲ ದೋಸೆ" data-id="mushroom-masala-dosa" data-title="Mushroom Masala Dosa" data-price="120"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Mushroom Masala Dosa</span><span class="name-kn kannada">ಮಶ್ರೂಮ್ ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹120</span><div id="btn-mushroom-masala-dosa"><button class="add-btn" onclick="addItem('mushroom-masala-dosa', 'Mushroom Masala', 120)">+ Add</button></div></div></li>
       </ul>
     </section>
 
     <!-- SPECIAL DOSA -->
     <section class="menu-card" data-category="special-dosa">
       <div class="card-header">
-        <h2>Special Dosa <span class="kannada">/ ಸ್ಪೆಷಲ್ ದೋಸೆ</span></h2>
+        <h2>Special Dosa <span class="kannada" style="font-size:0.9rem; color:var(--text-muted)">/ ಸ್ಪೆಷಲ್ ದೋಸೆ</span></h2>
         <span class="timing-badge">4:00 PM – 10:30 PM</span>
       </div>
       <ul class="menu-list">
-        <li class="menu-item"><div class="item-names"><span class="name-en">Kaju Dosa</span><span class="name-kn kannada">ಕಾಜು ದೋಸೆ</span></div><span class="item-price">₹110</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Kaju Masala Dosa</span><span class="name-kn kannada">ಕಾಜು ಮಸಾಲ ದೋಸೆ</span></div><span class="item-price">₹120</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Kaju Paneer Dosa</span><span class="name-kn kannada">ಕಾಜು ಪನ್ನೀರ್ ದೋಸೆ</span></div><span class="item-price">₹150</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Kaju Mushroom Dosa</span><span class="name-kn kannada">ಕಾಜು ಮಶ್ರೂಮ್ ದೋಸೆ</span></div><span class="item-price">₹150</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Palak Cheese Dosa</span><span class="name-kn kannada">ಪಾಲಕ್ ಚೀಸ್ ದೋಸೆ</span></div><span class="item-price">₹150</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Chocolate Dosa</span><span class="name-kn kannada">ಚಾಕೊಲೇಟ್ ದೋಸೆ</span></div><span class="item-price">₹150</span></li>
+        <li class="menu-item" data-name="Kaju Dosa ಕಾಜು ದೋಸೆ" data-id="kaju-dosa" data-title="Kaju Dosa" data-price="110"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Kaju Dosa</span><span class="name-kn kannada">ಕಾಜು ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹110</span><div id="btn-kaju-dosa"><button class="add-btn" onclick="addItem('kaju-dosa', 'Kaju Dosa', 110)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Kaju Masala Dosa ಕಾಜು ಮಸಾಲ ದೋಸೆ" data-id="kaju-masala-dosa" data-title="Kaju Masala Dosa" data-price="120"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Kaju Masala Dosa</span><span class="name-kn kannada">ಕಾಜು ಮಸಾಲ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹120</span><div id="btn-kaju-masala-dosa"><button class="add-btn" onclick="addItem('kaju-masala-dosa', 'Kaju Masala Dosa', 120)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Kaju Paneer Dosa ಕಾಜು ಪನ್ನೀರ್ ದೋಸೆ" data-id="kaju-paneer-dosa" data-title="Kaju Paneer Dosa" data-price="150"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Kaju Paneer Dosa</span><span class="name-kn kannada">ಕಾಜು ಪನ್ನೀರ್ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹150</span><div id="btn-kaju-paneer-dosa"><button class="add-btn" onclick="addItem('kaju-paneer-dosa', 'Kaju Paneer Dosa', 150)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Kaju Mushroom Dosa ಕಾಜು ಮಶ್ರೂಮ್ ದೋಸೆ" data-id="kaju-mushroom-dosa" data-title="Kaju Mushroom Dosa" data-price="150"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Kaju Mushroom Dosa</span><span class="name-kn kannada">ಕಾಜು ಮಶ್ರೂಮ್ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹150</span><div id="btn-kaju-mushroom-dosa"><button class="add-btn" onclick="addItem('kaju-mushroom-dosa', 'Kaju Mushroom Dosa', 150)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Palak Cheese Dosa ಪಾಲಕ್ ಚೀಸ್ ದೋಸೆ" data-id="palak-cheese-dosa" data-title="Palak Cheese Dosa" data-price="150"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Palak Cheese Dosa</span><span class="name-kn kannada">ಪಾಲಕ್ ಚೀಸ್ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹150</span><div id="btn-palak-cheese-dosa"><button class="add-btn" onclick="addItem('palak-cheese-dosa', 'Palak Cheese Dosa', 150)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Chocolate Dosa ಚಾಕೊಲೇಟ್ ದೋಸೆ" data-id="chocolate-dosa" data-title="Chocolate Dosa" data-price="150"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Chocolate Dosa</span><span class="name-kn kannada">ಚಾಕೊಲೇಟ್ ದೋಸೆ</span></div></div><div class="item-right"><span class="item-price">₹150</span><div id="btn-chocolate-dosa"><button class="add-btn" onclick="addItem('chocolate-dosa', 'Chocolate Dosa', 150)">+ Add</button></div></div></li>
       </ul>
     </section>
 
-    <!-- PESARATTU VARIETIES -->
+    <!-- PESARATTU -->
     <section class="menu-card" data-category="pesarattu">
       <div class="card-header">
-        <h2>Pesarattu Varieties <span class="kannada">/ ಪೆಸರಟ್ಟು ವೆರೈಟಿಸ್</span></h2>
+        <h2>Pesarattu <span class="kannada" style="font-size:0.9rem; color:var(--text-muted)">/ ಪೆಸರಟ್ಟು</span></h2>
       </div>
       <ul class="menu-list">
-        <li class="menu-item"><div class="item-names"><span class="name-en">Plain Pesarattu</span><span class="name-kn kannada">ಪ್ಲೇನ್ ಪೆಸರಟ್ಟು</span></div><span class="item-price">₹70</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Ghee Pesarattu</span><span class="name-kn kannada">ಗೀ ಪೆಸರಟ್ಟು</span></div><span class="item-price">₹90</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Onion Pesarattu</span><span class="name-kn kannada">ಈರುಳ್ಳಿ ಪೆಸರಟ್ಟು</span></div><span class="item-price">₹80</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Ghee Onion Pesarattu</span><span class="name-kn kannada">ಗೀ ಈರುಳ್ಳಿ ಪೆಸರಟ್ಟು</span></div><span class="item-price">₹95</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Ghee Upma Pesarattu</span><span class="name-kn kannada">ಗೀ ಉಪ್ಮಾ ಪೆಸರಟ್ಟು</span></div><span class="item-price">₹120</span></li>
+        <li class="menu-item" data-name="Plain Pesarattu ಪ್ಲೇನ್ ಪೆಸರಟ್ಟು" data-id="plain-pesarattu" data-title="Plain Pesarattu" data-price="70"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Plain Pesarattu</span><span class="name-kn kannada">ಪ್ಲೇನ್ ಪೆಸರಟ್ಟು</span></div></div><div class="item-right"><span class="item-price">₹70</span><div id="btn-plain-pesarattu"><button class="add-btn" onclick="addItem('plain-pesarattu', 'Plain Pesarattu', 70)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Ghee Pesarattu ಗೀ ಪೆಸರಟ್ಟು" data-id="ghee-pesarattu" data-title="Ghee Pesarattu" data-price="90"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Ghee Pesarattu</span><span class="name-kn kannada">ಗೀ ಪೆಸರಟ್ಟು</span></div></div><div class="item-right"><span class="item-price">₹90</span><div id="btn-ghee-pesarattu"><button class="add-btn" onclick="addItem('ghee-pesarattu', 'Ghee Pesarattu', 90)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Onion Pesarattu ಈರುಳ್ಳಿ ಪೆಸರಟ್ಟು" data-id="onion-pesarattu" data-title="Onion Pesarattu" data-price="80"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Onion Pesarattu</span><span class="name-kn kannada">ಈರುಳ್ಳಿ ಪೆಸರಟ್ಟು</span></div></div><div class="item-right"><span class="item-price">₹80</span><div id="btn-onion-pesarattu"><button class="add-btn" onclick="addItem('onion-pesarattu', 'Onion Pesarattu', 80)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Ghee Onion Pesarattu ಗೀ ಈರುಳ್ಳಿ ಪೆಸರಟ್ಟು" data-id="ghee-onion-pesarattu" data-title="Ghee Onion Pesarattu" data-price="95"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Ghee Onion Pesarattu</span><span class="name-kn kannada">ಗೀ ಈರುಳ್ಳಿ ಪೆಸರಟ್ಟು</span></div></div><div class="item-right"><span class="item-price">₹95</span><div id="btn-ghee-onion-pesarattu"><button class="add-btn" onclick="addItem('ghee-onion-pesarattu', 'Ghee Onion Pesarattu', 95)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Ghee Upma Pesarattu ಗೀ ಉಪ್ಮಾ ಪೆಸರಟ್ಟು" data-id="ghee-upma-pesarattu" data-title="Ghee Upma Pesarattu" data-price="120"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Ghee Upma Pesarattu</span><span class="name-kn kannada">ಗೀ ಉಪ್ಮಾ ಪೆಸರಟ್ಟು</span></div></div><div class="item-right"><span class="item-price">₹120</span><div id="btn-ghee-upma-pesarattu"><button class="add-btn" onclick="addItem('ghee-upma-pesarattu', 'Ghee Upma Pesarattu', 120)">+ Add</button></div></div></li>
       </ul>
     </section>
 
     <!-- UTHAPPAM -->
     <section class="menu-card" data-category="uthappam">
       <div class="card-header">
-        <h2>Uthappam <span class="kannada">/ ಉತ್ತಪ್ಪಂ</span></h2>
+        <h2>Uthappam <span class="kannada" style="font-size:0.9rem; color:var(--text-muted)">/ ಉತ್ತಪ್ಪಂ</span></h2>
       </div>
       <ul class="menu-list">
-        <li class="menu-item"><div class="item-names"><span class="name-en">Onion Uthappam</span><span class="name-kn kannada">ಈರುಳ್ಳಿ ಉತ್ತಪ್ಪಂ</span></div><span class="item-price">₹100</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Masala Uthappam</span><span class="name-kn kannada">ಮಸಾಲ ಉತ್ತಪ್ಪಂ</span></div><span class="item-price">₹110</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Paneer Uthappam</span><span class="name-kn kannada">ಪನ್ನೀರ್ ಉತ್ತಪ್ಪಂ</span></div><span class="item-price">₹120</span></li>
+        <li class="menu-item" data-name="Onion Uthappam ಈರುಳ್ಳಿ ಉತ್ತಪ್ಪಂ" data-id="onion-uthappam" data-title="Onion Uthappam" data-price="100"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Onion Uthappam</span><span class="name-kn kannada">ಈರುಳ್ಳಿ ಉತ್ತಪ್ಪಂ</span></div></div><div class="item-right"><span class="item-price">₹100</span><div id="btn-onion-uthappam"><button class="add-btn" onclick="addItem('onion-uthappam', 'Onion Uthappam', 100)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Masala Uthappam ಮಸಾಲ ಉತ್ತಪ್ಪಂ" data-id="masala-uthappam" data-title="Masala Uthappam" data-price="110"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Masala Uthappam</span><span class="name-kn kannada">ಮಸಾಲ ಉತ್ತಪ್ಪಂ</span></div></div><div class="item-right"><span class="item-price">₹110</span><div id="btn-masala-uthappam"><button class="add-btn" onclick="addItem('masala-uthappam', 'Masala Uthappam', 110)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Paneer Uthappam ಪನ್ನೀರ್ ಉತ್ತಪ್ಪಂ" data-id="paneer-uthappam" data-title="Paneer Uthappam" data-price="120"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Paneer Uthappam</span><span class="name-kn kannada">ಪನ್ನೀರ್ ಉತ್ತಪ್ಪಂ</span></div></div><div class="item-right"><span class="item-price">₹120</span><div id="btn-paneer-uthappam"><button class="add-btn" onclick="addItem('paneer-uthappam', 'Paneer Uthappam', 120)">+ Add</button></div></div></li>
       </ul>
     </section>
 
-    <!-- LUNCH -->
+    <!-- MEALS / LUNCH -->
     <section class="menu-card" data-category="lunch">
       <div class="card-header">
-        <h2>Lunch <span class="kannada">/ ಊಟಗಳು</span></h2>
+        <h2>Lunch & Meals <span class="kannada" style="font-size:0.9rem; color:var(--text-muted)">/ ಊಟಗಳು</span></h2>
         <span class="timing-badge">11:30 AM – 4:00 PM</span>
       </div>
       <ul class="menu-list">
-        <li class="menu-item">
-          <div class="item-names">
-            <span class="name-en">South Indian Meals</span>
-            <span class="name-kn kannada">ದಕ್ಷಿಣ ಭಾರತದ ಊಟಗಳು</span>
-            <span class="item-desc">Pulka, Papad, Pickle, Curry, Rice, Palya, Pappu, Rasam, Curd, Sweet</span>
-          </div>
-          <span class="item-price">₹110</span>
-        </li>
-        <li class="menu-item">
-          <div class="item-names">
-            <span class="name-en">North Indian Meals</span>
-            <span class="name-kn kannada">ಉತ್ತರ ಭಾರತದ ಊಟಗಳು</span>
-            <span class="item-desc">Roti/Phulka, Papad, Pickle, Curry, Rice, Palya, Dal, Rasam, Curd, Sweet</span>
-          </div>
-          <span class="item-price">₹140</span>
-        </li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Roti Curry (2 Roti + Curry)</span><span class="name-kn kannada">ರೋಟಿ ಕರಿ</span></div><span class="item-price">₹90</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Curd Rice</span><span class="name-kn kannada">ಕರ್ಡ್ ರೈಸ್</span></div><span class="item-price">₹60</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Curd</span><span class="name-kn kannada">ಕರ್ಡ್</span></div><span class="item-price">₹20</span></li>
+        <li class="menu-item" data-name="South Indian Meals ದಕ್ಷಿಣ ಭಾರತದ ಊಟ" data-id="south-meals" data-title="South Indian Meals" data-price="110"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">South Indian Meals</span><span class="name-kn kannada">ದಕ್ಷಿಣ ಭಾರತದ ಊಟಗಳು</span><span class="item-desc">Pulka, Papad, Pickle, Curry, Rice, Palya, Pappu, Rasam, Curd, Sweet</span></div></div><div class="item-right"><span class="item-price">₹110</span><div id="btn-south-meals"><button class="add-btn" onclick="addItem('south-meals', 'South Indian Meals', 110)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="North Indian Meals ಉತ್ತರ ಭಾರತದ ಊಟ" data-id="north-meals" data-title="North Indian Meals" data-price="140"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">North Indian Meals</span><span class="name-kn kannada">ಉತ್ತರ ಭಾರತದ ಊಟಗಳು</span><span class="item-desc">Roti/Phulka, Papad, Pickle, Curry, Rice, Palya, Dal, Rasam, Curd, Sweet</span></div></div><div class="item-right"><span class="item-price">₹140</span><div id="btn-north-meals"><button class="add-btn" onclick="addItem('north-meals', 'North Indian Meals', 140)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Roti Curry (2 Roti + Curry) ರೋಟಿ ಕರಿ" data-id="roti-curry" data-title="Roti Curry (2 Roti)" data-price="90"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Roti Curry (2 Roti + Curry)</span><span class="name-kn kannada">ರೋಟಿ ಕರಿ</span></div></div><div class="item-right"><span class="item-price">₹90</span><div id="btn-roti-curry"><button class="add-btn" onclick="addItem('roti-curry', 'Roti Curry', 90)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Curd Rice ಕರ್ಡ್ ರೈಸ್" data-id="curd-rice" data-title="Curd Rice" data-price="60"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Curd Rice</span><span class="name-kn kannada">ಕರ್ಡ್ ರೈಸ್</span></div></div><div class="item-right"><span class="item-price">₹60</span><div id="btn-curd-rice"><button class="add-btn" onclick="addItem('curd-rice', 'Curd Rice', 60)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Curd ಕರ್ಡ್" data-id="curd" data-title="Curd" data-price="20"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Curd</span><span class="name-kn kannada">ಕರ್ಡ್</span></div></div><div class="item-right"><span class="item-price">₹20</span><div id="btn-curd"><button class="add-btn" onclick="addItem('curd', 'Curd', 20)">+ Add</button></div></div></li>
       </ul>
     </section>
 
     <!-- ROTI -->
     <section class="menu-card" data-category="roti">
       <div class="card-header">
-        <h2>Roti <span class="kannada">/ ರೋಟಿ</span></h2>
-        <span class="timing-badge">11:00 AM–4:00 PM, 7:00 PM–10:30 PM</span>
+        <h2>Roti & Breads <span class="kannada" style="font-size:0.9rem; color:var(--text-muted)">/ ರೋಟಿ</span></h2>
+        <span class="timing-badge">11AM–4PM, 7PM–10:30PM</span>
       </div>
       <ul class="menu-list">
-        <li class="menu-item"><div class="item-names"><span class="name-en">Roti</span><span class="name-kn kannada">ರೋಟಿ</span></div><span class="item-price">₹30</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Butter Roti</span><span class="name-kn kannada">ಬೆಣ್ಣೆ ರೋಟಿ</span></div><span class="item-price">₹40</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Menthi Roti</span><span class="name-kn kannada">ಮೆಂತಿ ರೋಟಿ</span></div><span class="item-price">₹50</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Pudina Roti</span><span class="name-kn kannada">ಪುದೀನಾ ರೋಟಿ</span></div><span class="item-price">₹50</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Plain Naan</span><span class="name-kn kannada">ಸರಳ ನಾನ್</span></div><span class="item-price">₹50</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Butter Naan</span><span class="name-kn kannada">ಬೆಣ್ಣೆ ನಾನ್</span></div><span class="item-price">₹60</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Garlic Naan</span><span class="name-kn kannada">ಬೆಳ್ಳುಳ್ಳಿ ನಾನ್</span></div><span class="item-price">₹60</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Plain Kulcha</span><span class="name-kn kannada">ಕುಲ್ಚಾ</span></div><span class="item-price">₹40</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Butter Kulcha</span><span class="name-kn kannada">ಬೆಣ್ಣೆ ಕುಲ್ಚಾ</span></div><span class="item-price">₹50</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Menthi Kulcha</span><span class="name-kn kannada">ಮೆಂತಿ ಕುಲ್ಚಾ</span></div><span class="item-price">₹50</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Masala Kulcha</span><span class="name-kn kannada">ಮಸಾಲಾ ಕುಲ್ಚಾ</span></div><span class="item-price">₹60</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Stuffed Kulcha</span><span class="name-kn kannada">ಸ್ಟಫ್ಡ್ ಕುಲ್ಚಾ</span></div><span class="item-price">₹75</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Tomato Kulcha</span><span class="name-kn kannada">ಟೊಮೇಟೊ ಕುಲ್ಚಾ</span></div><span class="item-price">₹75</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Onion Kulcha</span><span class="name-kn kannada">ಈರುಳ್ಳಿ ಕುಲ್ಚಾ</span></div><span class="item-price">₹75</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Tandoori Paratha</span><span class="name-kn kannada">ತಂದೂರಿ ಪರಾಠ</span></div><span class="item-price">₹55</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Aloo Paratha</span><span class="name-kn kannada">ಆಲೂ ಪರಾಠ</span></div><span class="item-price">₹70</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Stuffed Paratha</span><span class="name-kn kannada">ಸ್ಟಫ್ಡ್ ಪರಾಠ</span></div><span class="item-price">₹70</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Paneer Paratha</span><span class="name-kn kannada">ಪನ್ನೀರ್ ಪರಾಠ</span></div><span class="item-price">₹90</span></li>
-        <li class="menu-item"><div class="item-names"><span class="name-en">Roti Basket</span><span class="item-desc">(7 varieties)</span><span class="name-kn kannada">ರೋಟಿ ಬಾಸ್ಕೆಟ್</span></div><span class="item-price">₹300</span></li>
+        <li class="menu-item" data-name="Roti ರೋಟಿ" data-id="roti" data-title="Roti" data-price="30"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Roti</span><span class="name-kn kannada">ರೋಟಿ</span></div></div><div class="item-right"><span class="item-price">₹30</span><div id="btn-roti"><button class="add-btn" onclick="addItem('roti', 'Roti', 30)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Butter Roti ಬೆಣ್ಣೆ ರೋಟಿ" data-id="butter-roti" data-title="Butter Roti" data-price="40"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Butter Roti</span><span class="name-kn kannada">ಬೆಣ್ಣೆ ರೋಟಿ</span></div></div><div class="item-right"><span class="item-price">₹40</span><div id="btn-butter-roti"><button class="add-btn" onclick="addItem('butter-roti', 'Butter Roti', 40)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Menthi Roti ಮೆಂತಿ ರೋಟಿ" data-id="menthi-roti" data-title="Menthi Roti" data-price="50"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Menthi Roti</span><span class="name-kn kannada">ಮೆಂತಿ ರೋಟಿ</span></div></div><div class="item-right"><span class="item-price">₹50</span><div id="btn-menthi-roti"><button class="add-btn" onclick="addItem('menthi-roti', 'Menthi Roti', 50)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Pudina Roti ಪುದೀನಾ ರೋಟಿ" data-id="pudina-roti" data-title="Pudina Roti" data-price="50"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Pudina Roti</span><span class="name-kn kannada">ಪುದೀನಾ ರೋಟಿ</span></div></div><div class="item-right"><span class="item-price">₹50</span><div id="btn-pudina-roti"><button class="add-btn" onclick="addItem('pudina-roti', 'Pudina Roti', 50)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Plain Naan ಸರಳ ನಾನ್" data-id="plain-naan" data-title="Plain Naan" data-price="50"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Plain Naan</span><span class="name-kn kannada">ಸರಳ ನಾನ್</span></div></div><div class="item-right"><span class="item-price">₹50</span><div id="btn-plain-naan"><button class="add-btn" onclick="addItem('plain-naan', 'Plain Naan', 50)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Butter Naan ಬೆಣ್ಣೆ ನಾನ್" data-id="butter-naan" data-title="Butter Naan" data-price="60"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Butter Naan</span><span class="name-kn kannada">ಬೆಣ್ಣೆ ನಾನ್</span></div></div><div class="item-right"><span class="item-price">₹60</span><div id="btn-butter-naan"><button class="add-btn" onclick="addItem('butter-naan', 'Butter Naan', 60)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Garlic Naan ಬೆಳ್ಳುಳ್ಳಿ ನಾನ್" data-id="garlic-naan" data-title="Garlic Naan" data-price="60"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Garlic Naan</span><span class="name-kn kannada">ಬೆಳ್ಳುಳ್ಳಿ ನಾನ್</span></div></div><div class="item-right"><span class="item-price">₹60</span><div id="btn-garlic-naan"><button class="add-btn" onclick="addItem('garlic-naan', 'Garlic Naan', 60)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Plain Kulcha ಕುಲ್ಚಾ" data-id="plain-kulcha" data-title="Plain Kulcha" data-price="40"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Plain Kulcha</span><span class="name-kn kannada">ಕುಲ್ಚಾ</span></div></div><div class="item-right"><span class="item-price">₹40</span><div id="btn-plain-kulcha"><button class="add-btn" onclick="addItem('plain-kulcha', 'Plain Kulcha', 40)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Butter Kulcha ಬೆಣ್ಣೆ ಕುಲ್ಚಾ" data-id="butter-kulcha" data-title="Butter Kulcha" data-price="50"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Butter Kulcha</span><span class="name-kn kannada">ಬೆಣ್ಣೆ ಕುಲ್ಚಾ</span></div></div><div class="item-right"><span class="item-price">₹50</span><div id="btn-butter-kulcha"><button class="add-btn" onclick="addItem('butter-kulcha', 'Butter Kulcha', 50)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Masala Kulcha ಮಸಾಲಾ ಕುಲ್ಚಾ" data-id="masala-kulcha" data-title="Masala Kulcha" data-price="60"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Masala Kulcha</span><span class="name-kn kannada">ಮಸಾಲಾ ಕುಲ್ಚಾ</span></div></div><div class="item-right"><span class="item-price">₹60</span><div id="btn-masala-kulcha"><button class="add-btn" onclick="addItem('masala-kulcha', 'Masala Kulcha', 60)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Stuffed Kulcha ಸ್ಟಫ್ಡ್ ಕುಲ್ಚಾ" data-id="stuffed-kulcha" data-title="Stuffed Kulcha" data-price="75"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Stuffed Kulcha</span><span class="name-kn kannada">ಸ್ಟಫ್ಡ್ ಕುಲ್ಚಾ</span></div></div><div class="item-right"><span class="item-price">₹75</span><div id="btn-stuffed-kulcha"><button class="add-btn" onclick="addItem('stuffed-kulcha', 'Stuffed Kulcha', 75)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Aloo Paratha ಆಲೂ ಪರಾಠ" data-id="aloo-paratha" data-title="Aloo Paratha" data-price="70"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Aloo Paratha</span><span class="name-kn kannada">ಆಲೂ ಪರಾಠ</span></div></div><div class="item-right"><span class="item-price">₹70</span><div id="btn-aloo-paratha"><button class="add-btn" onclick="addItem('aloo-paratha', 'Aloo Paratha', 70)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Paneer Paratha ಪನ್ನೀರ್ ಪರಾಠ" data-id="paneer-paratha" data-title="Paneer Paratha" data-price="90"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Paneer Paratha</span><span class="name-kn kannada">ಪನ್ನೀರ್ ಪರಾಠ</span></div></div><div class="item-right"><span class="item-price">₹90</span><div id="btn-paneer-paratha"><button class="add-btn" onclick="addItem('paneer-paratha', 'Paneer Paratha', 90)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Roti Basket (7 varieties) ರೋಟಿ ಬಾಸ್ಕೆಟ್" data-id="roti-basket" data-title="Roti Basket (7 varieties)" data-price="300"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Roti Basket (7 varieties)</span><span class="name-kn kannada">ರೋಟಿ ಬಾಸ್ಕೆಟ್</span></div></div><div class="item-right"><span class="item-price">₹300</span><div id="btn-roti-basket"><button class="add-btn" onclick="addItem('roti-basket', 'Roti Basket', 300)">+ Add</button></div></div></li>
       </ul>
     </section>
 
+    <!-- BEVERAGES -->
+    <section class="menu-card" data-category="beverages">
+      <div class="card-header">
+        <h2>Beverages <span class="kannada" style="font-size:0.9rem; color:var(--text-muted)">/ ಬಾವರೇಜಸ್</span></h2>
+      </div>
+      <ul class="menu-list">
+        <li class="menu-item" data-name="Milk ಹಾಲು" data-id="milk" data-title="Milk" data-price="20"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Milk</span><span class="name-kn kannada">ಹಾಲು</span></div></div><div class="item-right"><span class="item-price">₹20</span><div id="btn-milk"><button class="add-btn" onclick="addItem('milk', 'Milk', 20)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Coffee ಕಾಫಿ" data-id="coffee" data-title="Coffee" data-price="25"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Coffee</span><span class="name-kn kannada">ಕಾಫಿ</span></div></div><div class="item-right"><span class="item-price">₹25</span><div id="btn-coffee"><button class="add-btn" onclick="addItem('coffee', 'Coffee', 25)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Tea ಟೀ" data-id="tea" data-title="Tea" data-price="20"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Tea</span><span class="name-kn kannada">ಟೀ</span></div></div><div class="item-right"><span class="item-price">₹20</span><div id="btn-tea"><button class="add-btn" onclick="addItem('tea', 'Tea', 20)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Lemon Tea ನಿಂಬೆ ಟೀ" data-id="lemon-tea" data-title="Lemon Tea" data-price="20"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Lemon Tea</span><span class="name-kn kannada">ನಿಂಬೆ ಟೀ</span></div></div><div class="item-right"><span class="item-price">₹20</span><div id="btn-lemon-tea"><button class="add-btn" onclick="addItem('lemon-tea', 'Lemon Tea', 20)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Ginger Coffee ಶುಂಠಿ ಕಾಫಿ" data-id="ginger-coffee" data-title="Ginger Coffee" data-price="25"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Ginger Coffee</span><span class="name-kn kannada">ಶುಂಠಿ ಕಾಫಿ</span></div></div><div class="item-right"><span class="item-price">₹25</span><div id="btn-ginger-coffee"><button class="add-btn" onclick="addItem('ginger-coffee', 'Ginger Coffee', 25)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Badam Milk ಬಾದಾಮ್ ಹಾಲು" data-id="badam-milk" data-title="Badam Milk" data-price="25"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Badam Milk</span><span class="name-kn kannada">ಬಾದಾಮ್ ಹಾಲು</span></div></div><div class="item-right"><span class="item-price">₹25</span><div id="btn-badam-milk"><button class="add-btn" onclick="addItem('badam-milk', 'Badam Milk', 25)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Bournvita ಬೋರ್ನ್‌ವಿಟಾ" data-id="bournvita" data-title="Bournvita" data-price="30"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Bournvita</span><span class="name-kn kannada">ಬೋರ್ನ್‌ವಿಟಾ</span></div></div><div class="item-right"><span class="item-price">₹30</span><div id="btn-bournvita"><button class="add-btn" onclick="addItem('bournvita', 'Bournvita', 30)">+ Add</button></div></div></li>
+        <li class="menu-item" data-name="Horlicks ಹಾರ್ಲಿಕ್ಸ್" data-id="horlicks" data-title="Horlicks" data-price="30"><div class="item-left"><div class="veg-icon"></div><div class="item-info"><span class="name-en">Horlicks</span><span class="name-kn kannada">ಹಾರ್ಲಿಕ್ಸ್</span></div></div><div class="item-right"><span class="item-price">₹30</span><div id="btn-horlicks"><button class="add-btn" onclick="addItem('horlicks', 'Horlicks', 30)">+ Add</button></div></div></li>
+      </ul>
+    </section>
   </main>
 
+  <!-- Persistent Review Link & Footer -->
   <footer>
     <p>© Annapurna Tiffins • Fresh & Pure Vegetarian</p>
+    <a href="https://www.google.com/maps/search/?api=1&query=Annapurna+Tiffins&query_place_id=ChIJIznANwAP6joRsC8ckf6OSuc" target="_blank" rel="noopener noreferrer" class="review-footer-btn">
+      ⭐ Rate Us on Google Maps
+    </a>
   </footer>
 
+  <!-- Sticky Bottom Summary Bar -->
+  <div class="order-bar hidden" id="orderBar">
+    <div>
+      <div style="font-size:0.75rem; color:#94a3b8; font-weight:600;" id="orderCount">0 items</div>
+      <div style="font-size:1.15rem; font-weight:800; color:#38bdf8;" id="orderTotal">₹0</div>
+    </div>
+    <button class="slip-btn" id="showSlipBtn" onclick="showReceiptModal()">Show Order Slip</button>
+  </div>
+
+  <!-- Digital Summary Slip Modal -->
+  <div class="modal-overlay" id="receiptModal">
+    <div class="receipt-card">
+      <div class="receipt-header">
+        <h3 style="font-family:'Cinzel',serif; color:var(--primary); font-size:1.2rem;">ANNAPURNA TIFFINS</h3>
+      </div>
+
+      <!-- Pay at Counter Alert -->
+      <div class="counter-alert-banner">
+        <strong>⚠️ Please Pay at Counter to Get Physical Token</strong>
+        <span>ದಯವಿಟ್ಟು ಕೌಂಟರ್‌ನಲ್ಲಿ ಪಾವತಿಸಿ ಟೋಕನ್ ಪಡೆಯಿರಿ</span>
+      </div>
+
+      <div class="receipt-items" id="receiptItemList"></div>
+
+      <!-- Tax & Rounding Breakdown -->
+      <div class="tax-breakdown">
+        <div class="tax-row">
+          <span>Subtotal</span>
+          <span id="receiptSubtotal">₹0.00</span>
+        </div>
+        <div class="tax-row">
+          <span>CGST (2.5%)</span>
+          <span id="receiptCgst">₹0.00</span>
+        </div>
+        <div class="tax-row">
+          <span>SGST (2.5%)</span>
+          <span id="receiptSgst">₹0.00</span>
+        </div>
+        <div class="tax-row" id="roundOffRow">
+          <span>Round Off (to nearest ₹5)</span>
+          <span id="receiptRoundOff">₹0.00</span>
+        </div>
+      </div>
+
+      <div class="receipt-total-row">
+        <span>Total Payable</span>
+        <span id="receiptGrandTotal">₹0</span>
+      </div>
+
+      <button class="close-modal-btn" onclick="hideReceiptModal()">Back to Menu</button>
+    </div>
+  </div>
+
+  <!-- Automated Post-Meal Review Modal -->
+  <div class="modal-overlay" id="reviewModal" style="z-index: 10000;">
+    <div class="receipt-card" style="text-align:center; padding:24px 20px;">
+      <h3 style="font-family:'Cinzel',serif; color:var(--primary); font-size:1.3rem; margin-bottom:8px;">How Was Your Meal? 🌟</h3>
+      <p style="font-size:0.85rem; color:#555; line-height:1.4; margin-bottom:16px;">
+        Hope you enjoyed your hot meal at Annapurna Tiffins! If you loved the food, please take 10 seconds to rate us on Google Maps.
+      </p>
+      <a href="https://www.google.com/maps/search/?api=1&query=Annapurna+Tiffins&query_place_id=ChIJIznANwAP6joRsC8ckf6OSuc" target="_blank" rel="noopener noreferrer" onclick="dismissReviewModal()" style="display:block; background:#16a34a; color:#fff; padding:12px; border-radius:10px; font-weight:800; text-decoration:none; margin-bottom:10px; box-shadow:0 4px 12px rgba(22,163,74,0.3);">
+        ⭐ Leave a Google Review
+      </a>
+      <button onclick="dismissReviewModal()" style="background:none; border:none; color:#888; font-size:0.8rem; cursor:pointer; padding:6px;">
+        Maybe Later
+      </button>
+    </div>
+  </div>
+
   <script>
-    function filterCategory(cat) {
+    const cart = {};
+    const GOOGLE_REVIEW_URL = "https://www.google.com/maps/search/?api=1&query=Annapurna+Tiffins&query_place_id=ChIJIznANwAP6joRsC8ckf6OSuc";
+
+    function addItem(id, title, price) {
+      if (!cart[id]) cart[id] = { title, price, qty: 0 };
+      cart[id].qty += 1;
+      renderItemControls(id);
+      updateCartSummary();
+    }
+
+    function removeItem(id) {
+      if (cart[id]) {
+        cart[id].qty -= 1;
+        if (cart[id].qty <= 0) delete cart[id];
+      }
+      renderItemControls(id);
+      updateCartSummary();
+    }
+
+    function renderItemControls(id) {
+      const btnContainer = document.getElementById(`btn-${id}`);
+      if (!btnContainer) return;
+
+      if (!cart[id] || cart[id].qty === 0) {
+        const item = document.querySelector(`[data-id="${id}"]`);
+        const title = item ? item.getAttribute('data-title') : '';
+        const price = item ? parseInt(item.getAttribute('data-price')) : 0;
+        btnContainer.innerHTML = `<button class="add-btn" onclick="addItem('${id}', '${title}', ${price})">+ Add</button>`;
+      } else {
+        btnContainer.innerHTML = `
+          <div class="stepper">
+            <button onclick="removeItem('${id}')">−</button>
+            <span class="count">${cart[id].qty}</span>
+            <button onclick="addItem('${id}', '${cart[id].title}', ${cart[id].price})">+</button>
+          </div>
+        `;
+      }
+    }
+
+    // Round up to the nearest ₹5 increment (e.g. ₹168 -> ₹170)
+    function calculateRoundedBill(subtotal) {
+      const cgst = subtotal * 0.025;
+      const sgst = subtotal * 0.025;
+      const rawTotal = subtotal + cgst + sgst;
+      
+      const roundedTotal = Math.ceil(rawTotal / 5) * 5;
+      const roundOff = (roundedTotal - rawTotal);
+
+      return { subtotal, cgst, sgst, rawTotal, roundedTotal, roundOff };
+    }
+
+    function updateCartSummary() {
+      let subtotal = 0;
+      let count = 0;
+
+      for (let key in cart) {
+        subtotal += cart[key].price * cart[key].qty;
+        count += cart[key].qty;
+      }
+
+      const bill = calculateRoundedBill(subtotal);
+      const bar = document.getElementById('orderBar');
+
+      if (count > 0) {
+        bar.classList.remove('hidden');
+        document.getElementById('orderCount').innerText = `${count} item(s) selected`;
+        document.getElementById('orderTotal').innerText = `Total: ₹${bill.roundedTotal}`;
+      } else {
+        bar.classList.add('hidden');
+      }
+    }
+
+    function showReceiptModal() {
+      const list = document.getElementById('receiptItemList');
+      if (!list) return;
+      list.innerHTML = '';
+      let subtotal = 0;
+
+      for (let key in cart) {
+        const itemTotal = cart[key].price * cart[key].qty;
+        subtotal += itemTotal;
+        list.innerHTML += `
+          <div class="receipt-row">
+            <span>${cart[key].title} × <strong>${cart[key].qty}</strong></span>
+            <span>₹${itemTotal}</span>
+          </div>
+        `;
+      }
+
+      const bill = calculateRoundedBill(subtotal);
+
+      document.getElementById('receiptSubtotal').innerText = `₹${bill.subtotal.toFixed(2)}`;
+      document.getElementById('receiptCgst').innerText = `₹${bill.cgst.toFixed(2)}`;
+      document.getElementById('receiptSgst').innerText = `₹${bill.sgst.toFixed(2)}`;
+      
+      const roundOffFormatted = (bill.roundOff >= 0 ? `+₹${bill.roundOff.toFixed(2)}` : `-₹${Math.abs(bill.roundOff).toFixed(2)}`);
+      document.getElementById('receiptRoundOff').innerText = roundOffFormatted;
+      document.getElementById('receiptGrandTotal').innerText = `₹${bill.roundedTotal}`;
+
+      try {
+        localStorage.setItem('annapurna_order_time', Date.now());
+      } catch (e) {}
+
+      document.getElementById('receiptModal').classList.add('active');
+    }
+
+    function hideReceiptModal() {
+      document.getElementById('receiptModal').classList.remove('active');
+    }
+
+    function filterCategory(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
       const cards = document.querySelectorAll('.menu-card');
-      const buttons = document.querySelectorAll('.filter-btn');
-
-      buttons.forEach(btn => btn.classList.remove('active'));
-      event.currentTarget.classList.add('active');
-
       cards.forEach(card => {
         if (cat === 'all' || card.getAttribute('data-category') === cat) {
-          card.style.display = 'flex';
+          card.style.display = 'block';
         } else {
           card.style.display = 'none';
         }
       });
     }
+
+    function searchDishes() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const items = document.querySelectorAll('.menu-item');
+      const cards = document.querySelectorAll('.menu-card');
+
+      if (q === '') {
+        items.forEach(i => i.style.display = 'flex');
+        cards.forEach(c => c.style.display = 'block');
+        return;
+      }
+
+      cards.forEach(card => {
+        let hasVisible = false;
+        card.querySelectorAll('.menu-item').forEach(item => {
+          const text = item.getAttribute('data-name').toLowerCase();
+          if (text.includes(q)) {
+            item.style.display = 'flex';
+            hasVisible = true;
+          } else {
+            item.style.display = 'none';
+          }
+        });
+        card.style.display = hasVisible ? 'block' : 'none';
+      });
+    }
+
+    function checkReviewTrigger() {
+      try {
+        const orderTime = localStorage.getItem('annapurna_order_time');
+        const dismissed = localStorage.getItem('annapurna_review_dismissed');
+
+        if (orderTime && !dismissed) {
+          const elapsedMinutes = (Date.now() - parseInt(orderTime)) / (1000 * 60);
+          if (elapsedMinutes >= 15 && elapsedMinutes <= 180) {
+            document.getElementById('reviewModal').classList.add('active');
+          }
+        }
+      } catch (e) {}
+    }
+
+    function dismissReviewModal() {
+      try {
+        localStorage.setItem('annapurna_review_dismissed', 'true');
+      } catch (e) {}
+      document.getElementById('reviewModal').classList.remove('active');
+    }
+
+    window.addEventListener('DOMContentLoaded', checkReviewTrigger);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) checkReviewTrigger();
+    });
   </script>
 </body>
 </html>
