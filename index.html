@@ -661,6 +661,13 @@
         <span>📋 Copy & Rate Us on Google</span>
       </button>
     </div>
+    <!-- Developer Outreach Footer -->
+    <footer class="dev-footer">
+      <div class="dev-footer-text">Want a smart QR digital menu for your restaurant?</div>
+      <a href="javascript:void(0)" class="dev-link" onclick="contactDeveloper()">
+        ⚡ Developed by Vamshi • Get Yours
+      </a>
+    </footer>
 
   </main>
 
@@ -731,6 +738,10 @@
     const API_URL = `https://opensheet.elk.sh/${GOOGLE_SPREADSHEET_ID}/${SHEET_NAME}`;
     const GOOGLE_PLACE_ID = "ChIJIznANwAP6joRsC8ckf6OSuc";
     const ANALYTICS_WEBHOOK_URL = ""; 
+    // Developer Details
+    const DEVELOPER_NAME = "Vamshi";
+    const DEVELOPER_PHONE = "7676368611";
+    const DEVELOPER_EMAIL = "digitalmenu1729@gmail.com";
 
     const cart = {};
     let fullMenuData = [];
@@ -929,6 +940,12 @@
         const hasVisible = Array.from(sec.querySelectorAll('.menu-item')).some(i => i.style.display !== 'none');
         sec.style.display = hasVisible ? 'block' : 'none';
       });
+    }
+
+    function contactDeveloper() {
+      logEvent('developer_lead_clicked');
+      const msg = encodeURIComponent(`Hi ${DEVELOPER_NAME}! I saw the digital menu demo. I'd like to get a similar QR digital menu setup for my food business.`);
+      window.open(`https://wa.me/${DEVELOPER_PHONE}?text=${msg}`, '_blank');
     }
 
     function addItem(id, title, price) {
