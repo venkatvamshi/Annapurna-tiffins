@@ -192,6 +192,11 @@
       box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
     }
 
+    /* Ad Container & Elements */
+    .ad-placeholder {
+      display: none; /* Controlled dynamically by JavaScript */
+    }
+
     .partner-promo-card {
       margin: 0.85rem 0 1.35rem 0;
       padding: 14px 16px;
@@ -204,14 +209,6 @@
       justify-content: space-between;
       gap: 12px;
       box-shadow: 0 4px 14px -2px rgba(5, 150, 105, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.05);
-      position: relative;
-    }
-
-    .partner-promo-card.in-modal {
-      margin: 1rem 0;
-      background: linear-gradient(135deg, #f8fafc 0%, #ecfdf5 100%);
-      border: 1px solid #cbd5e1;
-      border-left: 4px solid #059669;
     }
 
     .promo-badge {
@@ -233,9 +230,6 @@
       font-weight: 800;
       color: #0f172a;
       line-height: 1.25;
-      display: flex;
-      align-items: center;
-      gap: 5px;
     }
 
     .promo-subtext {
@@ -265,6 +259,7 @@
       transform: scale(0.96);
     }
 
+    /* Menu Cards */
     .menu-card {
       background: var(--surface);
       border-radius: var(--radius-lg);
@@ -437,6 +432,33 @@
       text-align: center;
     }
 
+    /* Muted Out-of-Stock Section */
+    .sold-out-card {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      opacity: 0.75;
+    }
+
+    .sold-out-card .card-header {
+      background: #f1f5f9;
+    }
+
+    .sold-out-card .name-en {
+      text-decoration: line-through;
+      color: #64748b;
+    }
+
+    .sold-out-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #ef4444;
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Bottom Summary Bar */
     .bottom-bar {
       position: fixed;
       bottom: 0;
@@ -487,6 +509,7 @@
       box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3);
     }
 
+    /* Modals */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -682,17 +705,8 @@
       <button class="cat-pill" onclick="selectCategory('beverages', this)">Beverages</button>
     </nav>
 
-    <!-- Elevated Top Partner Promo Banner -->
-    <div class="partner-promo-card">
-      <div>
-        <span class="promo-badge">⚡ Special Deal</span>
-        <div class="promo-heading">CleanDrive Doorstep Car Wash</div>
-        <div class="promo-subtext">Get 20% off exterior detailing while you eat.</div>
-      </div>
-      <button class="promo-btn" onclick="trackAndRedirectAd('919876543210', 'TOP_BANNER_CARWASH')">
-        Claim Offer
-      </button>
-    </div>
+    <!-- Top Ad Placeholder (Auto-loads from ad.html; hidden completely if absent) -->
+    <div id="topAdPlaceholder" class="ad-placeholder"></div>
 
     <div id="menuContainer">
       <div style="text-align:center; padding: 3rem 1rem; color: var(--text-muted); font-weight: 600;">
@@ -714,7 +728,6 @@
       </button>
     </div>
 
-    <!-- Developer Outreach Footer -->
     <footer class="dev-footer">
       <div class="dev-footer-text">Want a smart QR digital menu for your restaurant?</div>
       <button class="dev-link-btn" onclick="contactDeveloper()">
@@ -760,17 +773,8 @@
         <span id="billGrandTotal" style="color:var(--accent);">₹0</span>
       </div>
 
-      <!-- In-Modal Elevated Partner Card -->
-      <div class="partner-promo-card in-modal">
-        <div>
-          <span class="promo-badge">Exclusive Offer</span>
-          <div class="promo-heading">CleanDrive Car Wash</div>
-          <div class="promo-subtext">Flat ₹100 OFF with code <strong>ANNAPURNA</strong></div>
-        </div>
-        <button class="promo-btn" onclick="trackAndRedirectAd('919876543210', 'MODAL_SLIP_CARWASH')">
-          Claim Offer
-        </button>
-      </div>
+      <!-- In-Modal Ad Placeholder -->
+      <div id="modalAdPlaceholder" class="ad-placeholder"></div>
 
       <div class="notice-box">
         💡 Note: Please show this slip at the billing counter to make payment and collect your food token.
@@ -829,6 +833,38 @@
       { id: 'tea', category: 'beverages', name_en: 'Tea', name_kn: 'ಟೀ', price: 20, in_stock: true, badge: '', description: 'Freshly brewed spiced hot tea' }
     ];
 
+    // ==========================================
+    // ASYNC AD LOADER WITH SILENT FAILOVER
+    // ==========================================
+    async function loadExternalAd() {
+      const topPlaceholder = document.getElementById('topAdPlaceholder');
+      const modalPlaceholder = document.getElementById('modalAdPlaceholder');
+      
+      try {
+        const response = await fetch('ad.html');
+        if (!response.ok) throw new Error('ad.html not found');
+        
+        const adHtml = (await response.text()).trim();
+        if (!adHtml) throw new Error('ad.html is empty');
+
+        if (topPlaceholder) {
+          topPlaceholder.innerHTML = adHtml;
+          topPlaceholder.style.display = 'block';
+        }
+        if (modalPlaceholder) {
+          modalPlaceholder.innerHTML = adHtml;
+          modalPlaceholder.style.display = 'block';
+        }
+      } catch (err) {
+        // If ad.html doesn't exist or is empty, hide placeholders cleanly
+        if (topPlaceholder) topPlaceholder.style.display = 'none';
+        if (modalPlaceholder) modalPlaceholder.style.display = 'none';
+      }
+    }
+
+    // ==========================================
+    // ANALYTICS & LOGGING
+    // ==========================================
     function logEvent(eventName, payload = {}) {
       const eventData = {
         event: eventName,
@@ -861,6 +897,8 @@
 
     async function initMenuData() {
       logEvent('page_view', { source: 'qr_scan' });
+      loadExternalAd();
+
       try {
         if (!GOOGLE_SPREADSHEET_ID || GOOGLE_SPREADSHEET_ID.includes("YOUR_SPREADSHEET_ID")) {
           throw new Error("Spreadsheet ID unconfigured");
@@ -877,11 +915,15 @@
       updateSuggestedReview();
     }
 
+    // ==========================================
+    // MENU RENDERING (WITH DEDICATED SOLD-OUT SECTION)
+    // ==========================================
     function renderMenu() {
       const container = document.getElementById('menuContainer');
       container.innerHTML = '';
 
-      const grouped = {};
+      const groupedAvailable = {};
+      const soldOutItems = [];
 
       fullMenuData.forEach((item, index) => {
         if (!item.name_en || !item.name_en.trim()) return;
@@ -896,20 +938,28 @@
         const rawStock = item.in_stock ?? item['In Stock'] ?? item['instock'] ?? item['In_Stock'] ?? true;
         const isAvailable = rawStock === true || String(rawStock).trim().toUpperCase() === 'TRUE';
 
-        if (!grouped[cat]) grouped[cat] = [];
-        grouped[cat].push({
+        const dishData = {
           id: dishId,
           name_en: dishName,
           name_kn: item.name_kn ? item.name_kn.trim() : '',
           price: price,
           in_stock: isAvailable,
           badge: item.badge ? item.badge.trim() : '',
-          description: item.description ? item.description.trim() : ''
-        });
+          description: item.description ? item.description.trim() : '',
+          category: cat
+        };
+
+        if (isAvailable) {
+          if (!groupedAvailable[cat]) groupedAvailable[cat] = [];
+          groupedAvailable[cat].push(dishData);
+        } else {
+          soldOutItems.push(dishData);
+        }
       });
 
+      // 1. Render Active In-Stock Categories
       for (let cat in CATEGORY_MAP) {
-        if (!grouped[cat] || grouped[cat].length === 0) continue;
+        if (!groupedAvailable[cat] || groupedAvailable[cat].length === 0) continue;
 
         const catInfo = CATEGORY_MAP[cat];
         const section = document.createElement('section');
@@ -921,16 +971,14 @@
         }
 
         let itemsHtml = '';
-        grouped[cat].forEach(dish => {
+        groupedAvailable[cat].forEach(dish => {
           const badgeHtml = dish.badge ? `<span class="tag-highlight">${dish.badge}</span>` : '';
           const kannadaHtml = dish.name_kn ? `<span class="name-kn kannada">${dish.name_kn}</span>` : '';
           const descHtml = dish.description ? `<span class="item-desc">${dish.description}</span>` : '';
           const qty = cart[dish.id] ? cart[dish.id].qty : 0;
 
           let btnAreaHtml = '';
-          if (!dish.in_stock) {
-            btnAreaHtml = `<span style="font-size:0.75rem; color:#ef4444; font-weight:700; padding:4px;">Sold Out</span>`;
-          } else if (qty > 0) {
+          if (qty > 0) {
             btnAreaHtml = `
               <div class="qty-counter">
                 <button class="qty-btn" onclick="updateQty('${dish.id}', -1)">−</button>
@@ -969,6 +1017,42 @@
 
         container.appendChild(section);
       }
+
+      // 2. Render Dedicated Muted "Out of Stock" Section (if any sold out)
+      if (soldOutItems.length > 0) {
+        const soldOutSection = document.createElement('section');
+        soldOutSection.className = 'menu-card sold-out-card';
+        soldOutSection.setAttribute('data-category', 'sold-out');
+
+        let soldOutHtml = '';
+        soldOutItems.forEach(dish => {
+          const kannadaHtml = dish.name_kn ? `<span class="name-kn kannada">${dish.name_kn}</span>` : '';
+          soldOutHtml += `
+            <li class="menu-item" data-name="${dish.name_en.toLowerCase()} ${dish.name_kn.toLowerCase()}" data-id="${dish.id}">
+              <div class="item-left">
+                <div class="veg-icon" style="filter: grayscale(1); opacity:0.5;"></div>
+                <div class="item-info">
+                  <span class="name-en">${dish.name_en}</span>
+                  ${kannadaHtml}
+                </div>
+              </div>
+              <div class="item-right">
+                <span class="sold-out-badge">Sold Out</span>
+              </div>
+            </li>
+          `;
+        });
+
+        soldOutSection.innerHTML = `
+          <div class="card-header">
+            <h2 style="color: #64748b;">Currently Unavailable <span class="kannada" style="font-size:0.85rem; color:var(--text-muted)">/ ಸದ್ಯಕ್ಕೆ ಲಭ್ಯವಿಲ್ಲ</span></h2>
+            <span class="timing-badge" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5;">Sold Out</span>
+          </div>
+          <ul class="menu-list">${soldOutHtml}</ul>
+        `;
+
+        container.appendChild(soldOutSection);
+      }
     }
 
     function selectCategory(cat, element) {
@@ -979,7 +1063,8 @@
 
       const sections = document.querySelectorAll('.menu-card');
       sections.forEach(sec => {
-        if (cat === 'all' || sec.getAttribute('data-category') === cat) {
+        const secCat = sec.getAttribute('data-category');
+        if (cat === 'all' || secCat === cat || secCat === 'sold-out') {
           sec.style.display = 'block';
         } else {
           sec.style.display = 'none';
@@ -1002,6 +1087,9 @@
       });
     }
 
+    // ==========================================
+    // CART & ROUNDED BILL ENGINE
+    // ==========================================
     function addItem(id, title, price) {
       cart[id] = { title, price, qty: 1 };
       logEvent('add_to_cart', { item_id: id, item_title: title, price: price });
@@ -1076,6 +1164,9 @@
       if (e.target.id === 'orderSlipModal') closeSlipModal();
     }
 
+    // ==========================================
+    // DYNAMIC REVIEW GENERATOR
+    // ==========================================
     const REVIEW_PARTS = {
       openers: [
         "Had a wonderful breakfast at Annapurna Tiffins today!",
