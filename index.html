@@ -7,18 +7,23 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-2LNRM640XC');
   </script>
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Annapurna Tiffins - Authentic South Indian Dining</title>
+  <title>Fast Counter Order</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tiro+Kannada:ital@0;1&display=swap" rel="stylesheet">
   
+  <!-- Lightweight QR Code Generator -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- EXTERNAL STORE CONFIGURATION -->
+  <script src="config.js"></script>
+
   <style>
     :root {
       --primary: #d97706;
@@ -35,7 +40,6 @@
       --radius-md: 12px;
       --radius-lg: 16px;
       --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     }
 
     * {
@@ -115,10 +119,10 @@
 
     .helper-tip {
       background: #fffbeb;
-      border: 1px solid #fef3c7;
+      border: 1px solid #fde68a;
       border-radius: var(--radius-sm);
       padding: 8px 12px;
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       color: #92400e;
       font-weight: 600;
       margin-bottom: 0.75rem;
@@ -192,74 +196,6 @@
       box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
     }
 
-    /* Ad Container & Elements */
-    .ad-placeholder {
-      display: none; /* Controlled dynamically by JavaScript */
-    }
-
-    .partner-promo-card {
-      margin: 0.85rem 0 1.35rem 0;
-      padding: 14px 16px;
-      background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-      border: 1px solid #bbf7d0;
-      border-left: 4px solid #10b981;
-      border-radius: var(--radius-lg);
-      display: flex !important;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      box-shadow: 0 4px 14px -2px rgba(5, 150, 105, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.05);
-    }
-
-    .promo-badge {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      background: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fde68a;
-      font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 6px;
-      display: inline-block;
-      margin-bottom: 4px;
-    }
-
-    .promo-heading {
-      font-size: 0.92rem;
-      font-weight: 800;
-      color: #0f172a;
-      line-height: 1.25;
-    }
-
-    .promo-subtext {
-      font-size: 0.76rem;
-      color: #475569;
-      margin-top: 3px;
-      font-weight: 500;
-    }
-
-    .promo-btn {
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 800;
-      padding: 9px 16px;
-      border-radius: 10px;
-      white-space: nowrap;
-      border: none;
-      cursor: pointer;
-      flex-shrink: 0;
-      box-shadow: 0 4px 10px rgba(5, 150, 105, 0.35);
-      transition: all 0.15s ease;
-    }
-
-    .promo-btn:active {
-      transform: scale(0.96);
-    }
-
-    /* Menu Cards */
     .menu-card {
       background: var(--surface);
       border-radius: var(--radius-lg);
@@ -432,33 +368,7 @@
       text-align: center;
     }
 
-    /* Muted Out-of-Stock Section */
-    .sold-out-card {
-      background: #f8fafc;
-      border: 1px dashed #cbd5e1;
-      opacity: 0.75;
-    }
-
-    .sold-out-card .card-header {
-      background: #f1f5f9;
-    }
-
-    .sold-out-card .name-en {
-      text-decoration: line-through;
-      color: #64748b;
-    }
-
-    .sold-out-badge {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: #ef4444;
-      background: #fee2e2;
-      border: 1px solid #fca5a5;
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-
-    /* Bottom Summary Bar */
+    /* Fixed Bottom Action Bar */
     .bottom-bar {
       position: fixed;
       bottom: 0;
@@ -500,21 +410,24 @@
     .view-slip-btn {
       background: var(--accent);
       color: white;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 0.9rem;
       padding: 0.65rem 1.25rem;
       border-radius: var(--radius-md);
       border: none;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    /* Modals */
+    /* Modal Sheet */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(3px);
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
       z-index: 100;
       display: none;
       align-items: flex-end;
@@ -526,10 +439,10 @@
       width: 100%;
       max-width: 680px;
       border-radius: 20px 20px 0 0;
-      padding: 1.25rem 1.25rem 2rem 1.25rem;
-      max-height: 85vh;
+      padding: 1.25rem 1.25rem 2.5rem 1.25rem;
+      max-height: 90vh;
       overflow-y: auto;
-      animation: slideUp 0.25s ease-out;
+      animation: slideUp 0.2s ease-out;
     }
 
     @keyframes slideUp {
@@ -541,7 +454,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px dashed var(--border);
+      border-bottom: 1px solid var(--border);
       padding-bottom: 0.75rem;
       margin-bottom: 1rem;
     }
@@ -555,18 +468,64 @@
       background: var(--bg);
       border: 1px solid var(--border);
       font-size: 1.1rem;
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       cursor: pointer;
       color: var(--text-muted);
+    }
+
+    .scan-hero-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border: 2px solid #0f172a;
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1rem;
+      text-align: center;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .scan-hero-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .scan-hero-subtitle {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 2px;
+      font-weight: 600;
+    }
+
+    .qr-frame-wrapper {
+      background: #ffffff;
+      padding: 14px;
+      border-radius: 12px;
+      margin: 12px 0 8px 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+    }
+
+    .qr-frame-wrapper img {
+      display: block;
+      margin: 0 auto;
     }
 
     .bill-row {
       display: flex;
       justify-content: space-between;
       font-size: 0.88rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.45rem;
       color: #334155;
     }
 
@@ -579,16 +538,17 @@
       margin-top: 0.75rem;
     }
 
-    .notice-box {
+    .disclaimer-box {
       background: #eff6ff;
       border: 1px solid #bfdbfe;
       color: #1e40af;
-      padding: 0.75rem;
+      padding: 0.65rem 0.85rem;
       border-radius: var(--radius-sm);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       text-align: center;
-      margin: 1rem 0;
+      margin-top: 1rem;
+      line-height: 1.4;
     }
 
     .review-action-card {
@@ -600,70 +560,21 @@
       margin: 1.5rem 0 1rem 0;
     }
 
-    .review-preview-text {
-      background: #ffffff;
-      border: 1px solid #fde68a;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 0.78rem;
-      color: #78350f;
-      text-align: left;
-      margin: 8px 0;
-      font-style: italic;
-    }
-
     .google-btn {
       width: 100%;
       background: #ea4335;
       color: white;
       border: none;
-      padding: 0.65rem;
+      padding: 0.75rem;
       border-radius: var(--radius-sm);
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-    }
-
-    .dev-footer {
-      text-align: center;
-      padding: 1.5rem 0.5rem 1rem 0.5rem;
-      margin-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .dev-footer-text {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .dev-link-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #92400e;
-      text-decoration: none;
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      border: 1px solid #fcd34d;
-      padding: 8px 16px;
-      border-radius: 30px;
-      box-shadow: 0 2px 5px rgba(217, 119, 6, 0.15);
-      cursor: pointer;
-      transition: transform 0.15s ease;
-    }
-
-    .dev-link-btn:active {
-      transform: scale(0.97);
+      margin-top: 8px;
     }
   </style>
 </head>
@@ -673,94 +584,91 @@
     <div class="header-container">
       <div class="brand-group">
         <div class="brand-title">
-          <span>Annapurna Tiffins</span>
+          <span id="brandTitleLabel">Annapurna Tiffins</span>
           <span class="brand-badge">Pure Veg</span>
         </div>
-        <div class="brand-subtitle kannada">ಶ್ರೀ ಅನ್ನಪೂರ್ಣ ಟಿಫಿನ್ಸ್ • Fresh & Authentic</div>
+        <div class="brand-subtitle kannada" id="brandSubtitleLabel">ಶ್ರೀ ಅನ್ನಪೂರ್ಣ ಟಿಫಿನ್ಸ್ • Fast Self-Service</div>
       </div>
     </div>
   </header>
 
   <main class="app-layout">
-
     <div class="helper-tip">
-      <span>💡</span>
-      <span>Tap <strong>+ Add</strong> on dishes to check the exact bill with GST before counter payment.</span>
+      <span>⚡</span>
+      <span>Add your breakfast items & show the <strong>Fast Scan QR</strong> to the cashier gun!</span>
     </div>
 
     <div class="search-wrapper">
       <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" id="searchInput" class="search-input" placeholder="Search dosa, idly, coffee, meals..." onkeyup="filterMenu()" />
+      <input type="text" id="searchInput" class="search-input" placeholder="Search dosa, idly, coffee..." onkeyup="filterMenu()" />
     </div>
 
     <nav class="categories-nav" id="categoryNav">
       <button class="cat-pill active" onclick="selectCategory('all', this)">All Items</button>
       <button class="cat-pill" onclick="selectCategory('breakfast', this)">Breakfast</button>
       <button class="cat-pill" onclick="selectCategory('dosa', this)">Dosas</button>
-      <button class="cat-pill" onclick="selectCategory('special-dosa', this)">Special Dosas</button>
-      <button class="cat-pill" onclick="selectCategory('pesarattu', this)">Pesarattu</button>
-      <button class="cat-pill" onclick="selectCategory('uthappam', this)">Uthappam</button>
-      <button class="cat-pill" onclick="selectCategory('lunch', this)">Lunch & Meals</button>
-      <button class="cat-pill" onclick="selectCategory('roti', this)">Roti & Breads</button>
+      <button class="cat-pill" onclick="selectCategory('special-dosa', this)">Specials</button>
       <button class="cat-pill" onclick="selectCategory('beverages', this)">Beverages</button>
     </nav>
 
-    <!-- Top Ad Placeholder (Auto-loads from ad.html; hidden completely if absent) -->
-    <div id="topAdPlaceholder" class="ad-placeholder"></div>
-
-    <div id="menuContainer">
-      <div style="text-align:center; padding: 3rem 1rem; color: var(--text-muted); font-weight: 600;">
-        Loading fresh menu...
-      </div>
-    </div>
+    <div id="menuContainer"></div>
 
     <div class="review-action-card">
       <div style="font-size: 1.25rem;">⭐ ⭐ ⭐ ⭐ ⭐</div>
-      <div style="font-weight: 800; font-size: 0.92rem; color: #78350f; margin-top: 2px;">Loved our hot tiffins?</div>
-      <div style="font-size: 0.78rem; color: #92400e; margin-bottom: 6px;">Tap below to copy our suggested review and support us on Google Maps!</div>
-      
-      <div id="suggestedReviewBox" class="review-preview-text">
-        "Authentic South Indian breakfast! Crisp dosas, soft idly, and perfect filter coffee."
-      </div>
-      
-      <button class="google-btn" onclick="copyAndOpenGoogleReview()">
-        <span>📋 Copy & Rate Us on Google</span>
+      <div style="font-weight: 800; font-size: 0.92rem; color: #78350f;">Enjoying our tiffins?</div>
+      <button class="google-btn" onclick="openGoogleReview()">
+        <span>Rate us on Google Maps</span>
       </button>
     </div>
-
-    <footer class="dev-footer">
-      <div class="dev-footer-text">Want a smart QR digital menu for your restaurant?</div>
-      <button class="dev-link-btn" onclick="contactDeveloper()">
-        <span>⚡</span> Developed by Vamshi • Get Yours
-      </button>
-    </footer>
-
   </main>
 
+  <!-- Sticky Bottom Cart Trigger -->
   <aside class="bottom-bar" id="bottomCartBar">
     <div class="bottom-bar-inner">
       <div class="cart-summary">
-        <span class="cart-count" id="cartCountLabel">0 items selected</span>
+        <span class="cart-count" id="cartCountLabel">0 items</span>
         <span class="cart-total" id="cartTotalLabel">₹0</span>
       </div>
-      <button class="view-slip-btn" onclick="openSlipModal()">Show Order Slip</button>
+      <button class="view-slip-btn" onclick="openSlipModal()">
+        <span>Show Counter QR</span>
+        <span>➔</span>
+      </button>
     </div>
   </aside>
 
+  <!-- Fast Scan Slip Modal -->
   <div class="modal-overlay" id="orderSlipModal" onclick="handleModalBackdrop(event)">
     <div class="modal-content">
       <div class="modal-header">
         <div>
-          <h3>Estimated Bill Summary</h3>
-          <span style="font-size:0.75rem; color:var(--text-muted);">Annapurna Tiffins • Counter Estimation</span>
+          <h3>Counter Fast Scan Slip</h3>
+          <span style="font-size:0.75rem; color:var(--text-muted);" id="modalBrandLabel">Annapurna Tiffins</span>
         </div>
         <button class="close-modal-btn" onclick="closeSlipModal()">✕</button>
       </div>
 
-      <div id="slipItemsList" style="margin-bottom: 1rem;"></div>
+      <!-- SCAN TARGET AREA (OPTIMIZED FOR SCANNER GUNS) -->
+      <div class="scan-hero-card">
+        <div class="scan-hero-title">
+          <span>🎯</span>
+          <span>Point Scanner Gun Here</span>
+        </div>
+        <div class="scan-hero-subtitle">Hold screen steady towards cashier gun</div>
+        
+        <div class="qr-frame-wrapper">
+          <div id="orderQrCanvas"></div>
+        </div>
+
+        <div style="font-size:0.72rem; color:#475569; font-weight:700;">
+          Auto-types items into Petpooja POS
+        </div>
+      </div>
+
+      <!-- Itemized Bill Breakdown -->
+      <div id="slipItemsList" style="margin-bottom: 0.75rem;"></div>
 
       <div class="bill-row">
-        <span>Items Subtotal</span>
+        <span>Subtotal</span>
         <span id="billSubtotal">₹0</span>
       </div>
       <div class="bill-row">
@@ -769,39 +677,17 @@
       </div>
       
       <div class="bill-row total">
-        <span>Total Payable (Rounded)</span>
+        <span>Estimated Total</span>
         <span id="billGrandTotal" style="color:var(--accent);">₹0</span>
       </div>
 
-      <!-- In-Modal Ad Placeholder -->
-      <div id="modalAdPlaceholder" class="ad-placeholder"></div>
-
-      <div class="notice-box">
-        💡 Note: Please show this slip at the billing counter to make payment and collect your food token.
+      <div class="disclaimer-box">
+        ⚠️ Final bill amount & kitchen token number will be issued directly on the paper receipt after payment.
       </div>
-
-      <button class="google-btn" style="background: var(--accent); margin-top: 0.5rem;" onclick="closeSlipModal()">
-        Back to Menu
-      </button>
     </div>
   </div>
 
   <script>
-    // ==========================================
-    // CONFIGURATION & GLOBAL STATE
-    // ==========================================
-    const GOOGLE_SPREADSHEET_ID = "17cObi5AFpwQspEYFpRl5y2loidPoztLRx21aOQEui3I"; 
-    const SHEET_NAME = "Menu";
-    const API_URL = `https://opensheet.elk.sh/${GOOGLE_SPREADSHEET_ID}/${SHEET_NAME}`;
-    const GOOGLE_PLACE_ID = "ChIJIznANwAP6joRsC8ckf6OSuc";
-    
-    // Developer Details
-    const DEVELOPER_NAME = "Vamshi";
-    const DEVELOPER_PHONE = "917676368611";
-    const DEVELOPER_EMAIL = "digitalmenu1729@gmail.com";
-
-    const ANALYTICS_WEBHOOK_URL = ""; 
-
     const cart = {};
     let fullMenuData = [];
     let currentCategory = 'all';
@@ -809,199 +695,115 @@
     const CATEGORY_MAP = {
       'breakfast': { title: 'Breakfast', kn: 'ತಿಂಡಿಗಳು', timing: '7:00 AM – 11:30 AM' },
       'dosa': { title: 'Dosa Varieties', kn: 'ದೋಸೆ', timing: 'All Day' },
-      'special-dosa': { title: 'Special Dosa', kn: 'ಸ್ಪೆಷಲ್ ದೋಸೆ', timing: '4:00 PM – 10:30 PM' },
-      'pesarattu': { title: 'Pesarattu', kn: 'ಪೆಸರಟ್ಟು', timing: 'All Day' },
-      'uthappam': { title: 'Uthappam', kn: 'ಉತ್ತಪ್ಪಂ', timing: 'All Day' },
-      'lunch': { title: 'Lunch & Meals', kn: 'ಊಟಗಳು', timing: '11:30 AM – 4:00 PM' },
-      'roti': { title: 'Roti & Breads', kn: 'ರೋಟಿ', timing: '11AM–4PM, 7PM–10:30PM' },
-      'beverages': { title: 'Beverages', kn: 'ಬಾವರೇಜಸ್', timing: 'All Day' }
+      'special-dosa': { title: 'Specials', kn: 'ಸ್ಪೆಷಲ್', timing: 'All Day' },
+      'beverages': { title: 'Beverages', kn: 'ಕಾಫಿ / ಟೀ', timing: 'All Day' }
     };
 
+    // Default Fallback Dataset
     const FALLBACK_MENU = [
-      { id: 'idly-2', category: 'breakfast', name_en: 'Idly (2)', name_kn: 'ಇಡ್ಲಿ (2)', price: 40, in_stock: true, badge: '', description: 'Steamed soft rice cakes (2 pieces) served with chutney & sambar' },
-      { id: 'thatta-idly', category: 'breakfast', name_en: 'Thatta Idly (1)', name_kn: 'ತಟ್ಟೆ ಇಡ್ಲಿ (1)', price: 40, in_stock: true, badge: '', description: 'Classic large flat steamed thatte idly served with podi & butter' },
-      { id: 'ghee-podi-idly', category: 'breakfast', name_en: 'Ghee Podi Idly', name_kn: 'ಗೀ ಪೊಡಿ ಇಡ್ಲಿ', price: 70, in_stock: true, badge: 'Popular', description: 'Steamed idlies tossed in spicy karam podi and pure melted ghee' },
-      { id: 'idly-vada', category: 'breakfast', name_en: 'Idly (2) / Vada', name_kn: 'ಇಡ್ಲಿ (2) / ವಡಾ', price: 70, in_stock: true, badge: 'Combo', description: 'Combo of 2 soft idlies and 1 crispy medu vada' },
-      { id: 'masala-dosa', category: 'dosa', name_en: 'Masala Dosa', name_kn: 'ಮಸಾಲ ದೋಸೆ', price: 80, in_stock: true, badge: 'Bestseller', description: 'Crispy golden dosa folded over spiced potato and onion filling' },
-      { id: 'ghee-podi-masala', category: 'dosa', name_en: 'Ghee Podi Masala Dosa', name_kn: 'ಗೀ ಪೊಡಿ ಮಸಾಲ ದೋಸೆ', price: 120, in_stock: true, badge: 'Signature', description: 'Crispy dosa roasted in ghee, layered with spicy podi & potato filling' },
-      { id: 'kaju-masala-dosa', category: 'special-dosa', name_en: 'Kaju Masala Dosa', name_kn: 'ಕಾಜು ಮಸಾಲ ದೋಸೆ', price: 120, in_stock: true, badge: 'Special', description: 'Cashew-studded crispy dosa folded over spiced potato filling' },
-      { id: 'ghee-upma-pesarattu', category: 'pesarattu', name_en: 'Ghee Upma Pesarattu', name_kn: 'ಗೀ ಉಪ್ಮಾ ಪೆಸರಟ್ಟು', price: 120, in_stock: true, badge: 'MLA Special', description: 'Moong dal dosa filled with hot rava upma & roasted in pure ghee' },
-      { id: 'onion-uthappam', category: 'uthappam', name_en: 'Onion Uthappam', name_kn: 'ಈರುಳ್ಳಿ ಉತ್ತಪ್ಪಂ', price: 100, in_stock: true, badge: '', description: 'Thick, soft pancake griddled with sweet caramelized onions' },
-      { id: 'south-meals', category: 'lunch', name_en: 'South Indian Meals', name_kn: 'ದಕ್ಷಿಣ ಭಾರತದ ಊಟ', price: 110, in_stock: true, badge: 'Full Thali', description: 'Pulka, Rice, Sambar, Rasam, Palya, Pappu, Curd & Sweet' },
-      { id: 'butter-naan', category: 'roti', name_en: 'Butter Naan', name_kn: 'ಬೆಣ್ಣೆ ನಾನ್', price: 60, in_stock: true, badge: 'Popular', description: 'Clay-oven baked leavened bread brushed with melted butter' },
-      { id: 'coffee', category: 'beverages', name_en: 'Coffee', name_kn: 'ಕಾಫಿ', price: 25, in_stock: true, badge: 'Bestseller', description: 'Authentic South Indian degree filter coffee' },
-      { id: 'tea', category: 'beverages', name_en: 'Tea', name_kn: 'ಟೀ', price: 20, in_stock: true, badge: '', description: 'Freshly brewed spiced hot tea' }
+      { id: 'idly-2', petpooja_code: '101', category: 'breakfast', name_en: 'Idly (2)', name_kn: 'ಇಡ್ಲಿ (2)', price: 40, in_stock: true, badge: '', description: 'Steamed rice cakes with chutney & sambar' },
+      { id: 'thatte-idly', petpooja_code: '102', category: 'breakfast', name_en: 'Thatte Idly (1)', name_kn: 'ತಟ್ಟೆ ಇಡ್ಲಿ (1)', price: 40, in_stock: true, badge: '', description: 'Soft plate idly served with podi butter' },
+      { id: 'ghee-podi-idly', petpooja_code: '103', category: 'breakfast', name_en: 'Ghee Podi Idly', name_kn: 'ಗೀ ಪೊಡಿ ಇಡ್ಲಿ', price: 70, in_stock: true, badge: 'Popular', description: 'Tossed in pure ghee and spicy podi' },
+      { id: 'masala-dosa', petpooja_code: '201', category: 'dosa', name_en: 'Masala Dosa', name_kn: 'ಮಸಾಲ ದೋಸೆ', price: 80, in_stock: true, badge: 'Bestseller', description: 'Crispy ghee roasted dosa with potato filling' },
+      { id: 'ghee-podi-masala', petpooja_code: '202', category: 'dosa', name_en: 'Ghee Podi Masala Dosa', name_kn: 'ಗೀ ಪೊಡಿ ಮಸಾಲ ದೋಸೆ', price: 120, in_stock: true, badge: 'Special', description: 'Layered with spiced podi and potato bhaji' },
+      { id: 'coffee', petpooja_code: '801', category: 'beverages', name_en: 'Filter Coffee', name_kn: 'ಫಿಲ್ಟರ್ ಕಾಫಿ', price: 25, in_stock: true, badge: 'Degree Coffee', description: 'Authentic South Indian degree filter coffee' },
+      { id: 'tea', petpooja_code: '802', category: 'beverages', name_en: 'Tea', name_kn: 'ಟೀ', price: 20, in_stock: true, badge: '', description: 'Hot brewed masala tea' }
     ];
 
-    // ==========================================
-    // ASYNC AD LOADER WITH SILENT FAILOVER
-    // ==========================================
-    async function loadExternalAd() {
-      const topPlaceholder = document.getElementById('topAdPlaceholder');
-      const modalPlaceholder = document.getElementById('modalAdPlaceholder');
-      
-      try {
-        const response = await fetch('ad.html');
-        if (!response.ok) throw new Error('ad.html not found');
-        
-        const adHtml = (await response.text()).trim();
-        if (!adHtml) throw new Error('ad.html is empty');
-
-        if (topPlaceholder) {
-          topPlaceholder.innerHTML = adHtml;
-          topPlaceholder.style.display = 'block';
+    async function initMenu() {
+      // Apply brand header from config if present
+      if (window.APP_CONFIG) {
+        if (APP_CONFIG.RESTAURANT_NAME) {
+          document.getElementById('brandTitleLabel').innerText = APP_CONFIG.RESTAURANT_NAME;
+          document.getElementById('modalBrandLabel').innerText = APP_CONFIG.RESTAURANT_NAME;
         }
-        if (modalPlaceholder) {
-          modalPlaceholder.innerHTML = adHtml;
-          modalPlaceholder.style.display = 'block';
+        if (APP_CONFIG.RESTAURANT_SUBTITLE_KN) {
+          document.getElementById('brandSubtitleLabel').innerText = APP_CONFIG.RESTAURANT_SUBTITLE_KN;
         }
-      } catch (err) {
-        // If ad.html doesn't exist or is empty, hide placeholders cleanly
-        if (topPlaceholder) topPlaceholder.style.display = 'none';
-        if (modalPlaceholder) modalPlaceholder.style.display = 'none';
-      }
-    }
-
-    // ==========================================
-    // ANALYTICS & LOGGING
-    // ==========================================
-    function logEvent(eventName, payload = {}) {
-      const eventData = {
-        event: eventName,
-        timestamp: new Date().toISOString(),
-        url: window.location.href,
-        ...payload
-      };
-
-      if (typeof gtag === 'function') {
-        gtag('event', eventName, payload);
-      }
-
-      if (ANALYTICS_WEBHOOK_URL) {
-        try {
-          fetch(ANALYTICS_WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(eventData),
-            keepalive: true
-          }).catch(() => {});
-        } catch (e) {}
       }
 
       try {
-        const history = JSON.parse(sessionStorage.getItem('menu_events') || '[]');
-        history.push(eventData);
-        sessionStorage.setItem('menu_events', JSON.stringify(history));
-      } catch (e) {}
-    }
+        const sheetId = window.APP_CONFIG ? APP_CONFIG.GOOGLE_SPREADSHEET_ID : null;
+        const tabName = (window.APP_CONFIG && APP_CONFIG.SHEET_NAME) ? APP_CONFIG.SHEET_NAME : "Menu";
 
-    async function initMenuData() {
-      logEvent('page_view', { source: 'qr_scan' });
-      loadExternalAd();
-
-      try {
-        if (!GOOGLE_SPREADSHEET_ID || GOOGLE_SPREADSHEET_ID.includes("YOUR_SPREADSHEET_ID")) {
-          throw new Error("Spreadsheet ID unconfigured");
+        if (!sheetId || sheetId.includes("YOUR_SPREADSHEET_ID")) {
+          throw new Error("Local fallback dataset mode");
         }
-        const res = await fetch(API_URL);
+
+        const apiUrl = `https://opensheet.elk.sh/${sheetId}/${tabName}`;
+        const res = await fetch(apiUrl);
         const data = await res.json();
-        if (!Array.isArray(data) || data.length === 0) throw new Error("Empty sheet");
+        if (!Array.isArray(data) || data.length === 0) throw new Error("Empty sheet data");
         fullMenuData = data;
       } catch (e) {
-        console.warn('Using offline dataset:', e.message);
         fullMenuData = FALLBACK_MENU;
       }
       renderMenu();
-      updateSuggestedReview();
     }
 
-    // ==========================================
-    // MENU RENDERING (WITH DEDICATED SOLD-OUT SECTION)
-    // ==========================================
     function renderMenu() {
       const container = document.getElementById('menuContainer');
       container.innerHTML = '';
 
-      const groupedAvailable = {};
-      const soldOutItems = [];
-
+      const grouped = {};
       fullMenuData.forEach((item, index) => {
-        if (!item.name_en || !item.name_en.trim()) return;
-
-        const dishName = item.name_en.trim();
-        const dishId = item.id ? item.id.trim() : `item-${index}-${dishName.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
-        const price = parseInt(item.price, 10) || 0;
-        
+        const dishId = item.id ? item.id.trim() : `item-${index}`;
+        const pCode = item.petpooja_code || item.item_code || '101';
         let cat = (item.category || 'breakfast').toLowerCase().trim();
         if (!CATEGORY_MAP[cat]) cat = 'breakfast';
 
-        const rawStock = item.in_stock ?? item['In Stock'] ?? item['instock'] ?? item['In_Stock'] ?? true;
-        const isAvailable = rawStock === true || String(rawStock).trim().toUpperCase() === 'TRUE';
-
         const dishData = {
           id: dishId,
-          name_en: dishName,
-          name_kn: item.name_kn ? item.name_kn.trim() : '',
-          price: price,
-          in_stock: isAvailable,
-          badge: item.badge ? item.badge.trim() : '',
-          description: item.description ? item.description.trim() : '',
-          category: cat
+          code: pCode,
+          name_en: item.name_en.trim(),
+          name_kn: item.name_kn || '',
+          price: parseInt(item.price, 10) || 0,
+          badge: item.badge || '',
+          description: item.description || ''
         };
 
-        if (isAvailable) {
-          if (!groupedAvailable[cat]) groupedAvailable[cat] = [];
-          groupedAvailable[cat].push(dishData);
-        } else {
-          soldOutItems.push(dishData);
-        }
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(dishData);
       });
 
-      // 1. Render Active In-Stock Categories
-      for (let cat in CATEGORY_MAP) {
-        if (!groupedAvailable[cat] || groupedAvailable[cat].length === 0) continue;
-
-        const catInfo = CATEGORY_MAP[cat];
+      for (let cat in grouped) {
+        const catInfo = CATEGORY_MAP[cat] || { title: cat, kn: '', timing: 'All Day' };
         const section = document.createElement('section');
         section.className = 'menu-card';
         section.setAttribute('data-category', cat);
-        
-        if (currentCategory !== 'all' && currentCategory !== cat) {
-          section.style.display = 'none';
-        }
+        if (currentCategory !== 'all' && currentCategory !== cat) section.style.display = 'none';
 
         let itemsHtml = '';
-        groupedAvailable[cat].forEach(dish => {
+        grouped[cat].forEach(dish => {
+          const qty = cart[dish.id] ? cart[dish.id].qty : 0;
           const badgeHtml = dish.badge ? `<span class="tag-highlight">${dish.badge}</span>` : '';
           const kannadaHtml = dish.name_kn ? `<span class="name-kn kannada">${dish.name_kn}</span>` : '';
-          const descHtml = dish.description ? `<span class="item-desc">${dish.description}</span>` : '';
-          const qty = cart[dish.id] ? cart[dish.id].qty : 0;
 
-          let btnAreaHtml = '';
+          let btnHtml = '';
           if (qty > 0) {
-            btnAreaHtml = `
+            btnHtml = `
               <div class="qty-counter">
                 <button class="qty-btn" onclick="updateQty('${dish.id}', -1)">−</button>
                 <span class="qty-val">${qty}</span>
                 <button class="qty-btn" onclick="updateQty('${dish.id}', 1)">+</button>
               </div>`;
           } else {
-            btnAreaHtml = `<button class="add-btn" onclick="addItem('${dish.id}', '${dish.name_en.replace(/'/g, "\\'")}', ${dish.price})">+ Add</button>`;
+            btnHtml = `<button class="add-btn" onclick="addItem('${dish.id}', '${dish.code}', '${dish.name_en.replace(/'/g, "\\'")}', ${dish.price})">+ Add</button>`;
           }
 
           itemsHtml += `
-            <li class="menu-item" data-name="${dish.name_en.toLowerCase()} ${dish.name_kn.toLowerCase()}" data-id="${dish.id}">
+            <li class="menu-item" data-name="${dish.name_en.toLowerCase()} ${dish.name_kn.toLowerCase()}">
               <div class="item-left">
                 <div class="veg-icon"></div>
                 <div class="item-info">
                   <span class="name-en">${dish.name_en} ${badgeHtml}</span>
                   ${kannadaHtml}
-                  ${descHtml}
+                  <span class="item-desc">${dish.description}</span>
                 </div>
               </div>
               <div class="item-right">
                 <span class="item-price">₹${dish.price}</span>
-                <div id="btn-${dish.id}">${btnAreaHtml}</div>
+                <div id="btn-${dish.id}">${btnHtml}</div>
               </div>
             </li>
           `;
@@ -1014,98 +816,67 @@
           </div>
           <ul class="menu-list">${itemsHtml}</ul>
         `;
-
         container.appendChild(section);
-      }
-
-      // 2. Render Dedicated Muted "Out of Stock" Section (if any sold out)
-      if (soldOutItems.length > 0) {
-        const soldOutSection = document.createElement('section');
-        soldOutSection.className = 'menu-card sold-out-card';
-        soldOutSection.setAttribute('data-category', 'sold-out');
-
-        let soldOutHtml = '';
-        soldOutItems.forEach(dish => {
-          const kannadaHtml = dish.name_kn ? `<span class="name-kn kannada">${dish.name_kn}</span>` : '';
-          soldOutHtml += `
-            <li class="menu-item" data-name="${dish.name_en.toLowerCase()} ${dish.name_kn.toLowerCase()}" data-id="${dish.id}">
-              <div class="item-left">
-                <div class="veg-icon" style="filter: grayscale(1); opacity:0.5;"></div>
-                <div class="item-info">
-                  <span class="name-en">${dish.name_en}</span>
-                  ${kannadaHtml}
-                </div>
-              </div>
-              <div class="item-right">
-                <span class="sold-out-badge">Sold Out</span>
-              </div>
-            </li>
-          `;
-        });
-
-        soldOutSection.innerHTML = `
-          <div class="card-header">
-            <h2 style="color: #64748b;">Currently Unavailable <span class="kannada" style="font-size:0.85rem; color:var(--text-muted)">/ ಸದ್ಯಕ್ಕೆ ಲಭ್ಯವಿಲ್ಲ</span></h2>
-            <span class="timing-badge" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5;">Sold Out</span>
-          </div>
-          <ul class="menu-list">${soldOutHtml}</ul>
-        `;
-
-        container.appendChild(soldOutSection);
       }
     }
 
-    function selectCategory(cat, element) {
+    function selectCategory(cat, el) {
       currentCategory = cat;
-      logEvent('filter_category', { category: cat });
-      document.querySelectorAll('.cat-pill').forEach(btn => btn.classList.remove('active'));
-      element.classList.add('active');
+      document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
 
-      const sections = document.querySelectorAll('.menu-card');
-      sections.forEach(sec => {
+      document.querySelectorAll('.menu-card').forEach(sec => {
         const secCat = sec.getAttribute('data-category');
-        if (cat === 'all' || secCat === cat || secCat === 'sold-out') {
-          sec.style.display = 'block';
-        } else {
-          sec.style.display = 'none';
-        }
+        sec.style.display = (cat === 'all' || secCat === cat) ? 'block' : 'none';
       });
     }
 
     function filterMenu() {
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
-      const items = document.querySelectorAll('.menu-item');
-      
-      items.forEach(item => {
+      document.querySelectorAll('.menu-item').forEach(item => {
         const name = item.getAttribute('data-name') || '';
         item.style.display = name.includes(q) ? 'flex' : 'none';
       });
-
-      document.querySelectorAll('.menu-card').forEach(sec => {
-        const hasVisible = Array.from(sec.querySelectorAll('.menu-item')).some(i => i.style.display !== 'none');
-        sec.style.display = hasVisible ? 'block' : 'none';
-      });
     }
 
-    // ==========================================
-    // CART & ROUNDED BILL ENGINE
-    // ==========================================
-    function addItem(id, title, price) {
-      cart[id] = { title, price, qty: 1 };
-      logEvent('add_to_cart', { item_id: id, item_title: title, price: price });
+    function addItem(id, code, title, price) {
+      cart[id] = { code, title, price, qty: 1 };
       refreshCartUI();
     }
 
     function updateQty(id, delta) {
       if (!cart[id]) return;
       cart[id].qty += delta;
-      if (cart[id].qty <= 0) {
-        logEvent('remove_from_cart', { item_id: id });
-        delete cart[id];
-      } else {
-        logEvent('update_cart_qty', { item_id: id, qty: cart[id].qty });
-      }
+      if (cart[id].qty <= 0) delete cart[id];
       refreshCartUI();
+    }
+
+    function generatePetpoojaKeystrokePayload() {
+      const keystrokeSequence = [];
+      for (let id in cart) {
+        const item = cart[id];
+        for (let i = 0; i < item.qty; i++) {
+          keystrokeSequence.push(item.code);
+        }
+      }
+      return keystrokeSequence.join('\r\n');
+    }
+
+    function renderOrderQr() {
+      const qrContainer = document.getElementById('orderQrCanvas');
+      qrContainer.innerHTML = '';
+
+      const payload = generatePetpoojaKeystrokePayload();
+      if (!payload) return;
+
+      new QRCode(qrContainer, {
+        text: payload,
+        width: 180,
+        height: 180,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
     }
 
     function refreshCartUI() {
@@ -1119,23 +890,22 @@
         rawSubtotal += cart[id].price * cart[id].qty;
       }
 
-      const gstAmount = rawSubtotal * 0.05;
-      const exactTotal = rawSubtotal + gstAmount;
-      const roundedTotal = Math.round(exactTotal / 5) * 5;
+      const gst = rawSubtotal * 0.05;
+      const grandTotal = Math.round((rawSubtotal + gst) / 5) * 5;
 
       const bar = document.getElementById('bottomCartBar');
       if (totalCount > 0) {
         bar.style.display = 'block';
-        document.getElementById('cartCountLabel').innerText = `${totalCount} item${totalCount > 1 ? 's' : ''} in cart`;
-        document.getElementById('cartTotalLabel').innerText = `₹${roundedTotal}`;
+        document.getElementById('cartCountLabel').innerText = `${totalCount} item${totalCount > 1 ? 's' : ''}`;
+        document.getElementById('cartTotalLabel').innerText = `₹${grandTotal}`;
       } else {
         bar.style.display = 'none';
         closeSlipModal();
       }
 
       document.getElementById('billSubtotal').innerText = `₹${rawSubtotal}`;
-      document.getElementById('billGst').innerText = `₹${gstAmount.toFixed(2)}`;
-      document.getElementById('billGrandTotal').innerText = `₹${roundedTotal}`;
+      document.getElementById('billGst').innerText = `₹${gst.toFixed(2)}`;
+      document.getElementById('billGrandTotal').innerText = `₹${grandTotal}`;
 
       let slipHtml = '';
       for (let id in cart) {
@@ -1148,11 +918,13 @@
       }
       document.getElementById('slipItemsList').innerHTML = slipHtml;
 
-      updateSuggestedReview();
+      if (totalCount > 0) {
+        renderOrderQr();
+      }
     }
 
     function openSlipModal() {
-      logEvent('view_order_slip');
+      renderOrderQr();
       document.getElementById('orderSlipModal').style.display = 'flex';
     }
 
@@ -1164,94 +936,13 @@
       if (e.target.id === 'orderSlipModal') closeSlipModal();
     }
 
-    // ==========================================
-    // DYNAMIC REVIEW GENERATOR
-    // ==========================================
-    const REVIEW_PARTS = {
-      openers: [
-        "Had a wonderful breakfast at Annapurna Tiffins today!",
-        "One of the best South Indian tiffin spots in the area.",
-        "Visited Annapurna Tiffins for morning tiffins, totally worth it.",
-        "Authentic Bangalore Darshini taste and super fresh food.",
-        "A must-visit place if you love genuine South Indian breakfast!"
-      ],
-      foodPhrases: [
-        "The Masala Dosa was super crispy and roasted in pure ghee.",
-        "The Thatte Idly was extremely soft and the chutney was fresh.",
-        "Loved the Ghee Podi Idly and the piping hot sambar.",
-        "Filter coffee was strong and had the perfect aroma.",
-        "Rava Dosa and Kesari Bath were fresh and flavorful."
-      ],
-      servicePhrases: [
-        "Very quick counter service and clean dining area.",
-        "Pocket friendly prices and good hygiene maintained.",
-        "Staff is polite and orders are served quickly.",
-        "Neat ambiance and great turnaround time."
-      ],
-      closers: [
-        "Will definitely visit again with family!",
-        "Highly recommended for daily breakfast and snacks.",
-        "10/10 experience, will keep coming back!",
-        "Definitely coming back for their filter coffee!"
-      ]
-    };
-
-    let activeReviewString = "";
-
-    function generateReviewText() {
-      const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-      const cartDishNames = Object.keys(cart).map(k => cart[k].title);
-
-      let foodMention = pick(REVIEW_PARTS.foodPhrases);
-      if (cartDishNames.length > 0) {
-        const dishSummary = cartDishNames.slice(0, 2).join(' and ');
-        foodMention = `The ${dishSummary} tasted authentic, fresh, and was served piping hot.`;
-      }
-
-      return `${pick(REVIEW_PARTS.openers)} ${foodMention} ${pick(REVIEW_PARTS.servicePhrases)} ${pick(REVIEW_PARTS.closers)}`;
+    function openGoogleReview() {
+      const placeId = (window.APP_CONFIG && APP_CONFIG.GOOGLE_PLACE_ID) ? APP_CONFIG.GOOGLE_PLACE_ID : "ChIJIznANwAP6joRsC8ckf6OSuc";
+      const url = `https://search.google.com/local/writereview?placeid=${placeId}`;
+      window.open(url, '_blank');
     }
 
-    function updateSuggestedReview() {
-      activeReviewString = generateReviewText();
-      const previewBox = document.getElementById('suggestedReviewBox');
-      if (previewBox) {
-        previewBox.innerText = `"${activeReviewString}"`;
-      }
-    }
-
-    async function copyAndOpenGoogleReview() {
-      logEvent('review_prompt_clicked', { review_text: activeReviewString });
-
-      try {
-        await navigator.clipboard.writeText(activeReviewString);
-      } catch (err) {
-        const temp = document.createElement("textarea");
-        temp.value = activeReviewString;
-        document.body.appendChild(temp);
-        temp.select();
-        document.execCommand("copy");
-        document.body.removeChild(temp);
-      }
-
-      alert("Review text copied to clipboard! Paste it on Google Maps.");
-      const reviewUrl = `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`;
-      window.open(reviewUrl, '_blank');
-    }
-
-    function trackAndRedirectAd(phone, campaignTag) {
-      logEvent('ad_sponsor_clicked', { campaign: campaignTag, advertiser_phone: phone });
-      const msg = encodeURIComponent(`Hi, I saw your partner offer on the Annapurna Tiffins digital menu (${campaignTag})`);
-      window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
-    }
-
-    function contactDeveloper() {
-      logEvent('developer_lead_clicked');
-      const msg = encodeURIComponent(`Hi ${DEVELOPER_NAME}! I saw the digital menu demo. I'd like to get a similar QR digital menu setup for my food business.`);
-      window.open(`https://wa.me/${DEVELOPER_PHONE}?text=${msg}`, '_blank');
-    }
-
-    window.addEventListener('DOMContentLoaded', initMenuData);
+    window.addEventListener('DOMContentLoaded', initMenu);
   </script>
 </body>
 </html>
-
