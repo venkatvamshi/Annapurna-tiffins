@@ -3,7 +3,7 @@ const RESTAURANT_CONFIG = {
   GOOGLE_SPREADSHEET_ID: "17c0bi5AFpwQspEYFpRl5y2loidPoztLRx21a0QEui3I",
   
   // Use tab index 1 or the exact sheet name (e.g., "Menu" or "Sheet1")
-  SHEET_TAB_NAME: "1", 
+  SHEET_TAB_NAME: "Menu", 
   
   GOOGLE_PLACE_ID: "ChIJIznANwAP6joRsC8ckf6OSuc",
   RESTAURANT_NAME: "Annapurna Tiffins",
