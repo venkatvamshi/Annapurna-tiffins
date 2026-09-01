@@ -1,9 +1,9 @@
 const RESTAURANT_CONFIG = {
-  // Paste your actual spreadsheet ID here (replace everything between the quotes)
-  GOOGLE_SPREADSHEET_ID: "17cObi5AFpwQspEYFpRl5y2loidPoztLRx21aOQEui3I",
+  // Correct ID with zeros (0)
+  GOOGLE_SPREADSHEET_ID: "17c0bi5AFpwQspEYFpRl5y2loidPoztLRx21a0QEui3I",
   
-  // Name of the tab at the bottom of the sheet (case-sensitive)
-  SHEET_TAB_NAME: "menu",
+  // Use tab index 1 or the exact sheet name (e.g., "Menu" or "Sheet1")
+  SHEET_TAB_NAME: "1", 
   
   GOOGLE_PLACE_ID: "ChIJIznANwAP6joRsC8ckf6OSuc",
   RESTAURANT_NAME: "Annapurna Tiffins",
