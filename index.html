@@ -22,9 +22,6 @@
   <!-- Lightweight QR Code Generator -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-  <!-- External Configuration File -->
-  <script src="config.js"></script>
-
   <style>
     :root {
       --primary: #d97706;
@@ -477,7 +474,7 @@
       color: var(--text-muted);
     }
 
-    /* Fast Scan Target Area */
+    /* Ultra Fast Scan QR Card */
     .scan-hero-card {
       background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
       border: 2px solid #0f172a;
@@ -517,8 +514,6 @@
       justify-content: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
       border: 1px solid #e2e8f0;
-      min-width: 208px;
-      min-height: 208px;
     }
 
     .qr-frame-wrapper img {
@@ -589,10 +584,10 @@
     <div class="header-container">
       <div class="brand-group">
         <div class="brand-title">
-          <span id="brandNameHeader">Annapurna Tiffins</span>
+          <span>Annapurna Tiffins</span>
           <span class="brand-badge">Pure Veg</span>
         </div>
-        <div class="brand-subtitle kannada" id="brandSubtitleHeader">ಶ್ರೀ ಅನ್ನಪೂರ್ಣ ಟಿಫಿನ್ಸ್ • Fast Self-Service</div>
+        <div class="brand-subtitle kannada">ಶ್ರೀ ಅನ್ನಪೂರ್ಣ ಟಿಫಿನ್ಸ್ • Fast Self-Service</div>
       </div>
     </div>
   </header>
@@ -649,7 +644,7 @@
       <div class="modal-header">
         <div>
           <h3>Counter Fast Scan Slip</h3>
-          <span style="font-size:0.75rem; color:var(--text-muted);" id="modalBrandTitle">Annapurna Tiffins</span>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Annapurna Tiffins</span>
         </div>
         <button class="close-modal-btn" onclick="closeSlipModal()">✕</button>
       </div>
@@ -695,6 +690,13 @@
   </div>
 
   <script>
+    // =======================================================
+    // CONFIGURATION & PETPOOJA ITEM SHORTCODES
+    // =======================================================
+    const GOOGLE_SPREADSHEET_ID = "17cObi5AFpwQspEYFpRl5y2loidPoztLRx21aOQEui3I"; 
+    const API_URL = `https://opensheet.elk.sh/${GOOGLE_SPREADSHEET_ID}/Menu`;
+    const GOOGLE_PLACE_ID = "ChIJIznANwAP6joRsC8ckf6OSuc";
+
     const cart = {};
     let fullMenuData = [];
     let currentCategory = 'all';
@@ -706,7 +708,7 @@
       'beverages': { title: 'Beverages', kn: 'ಕಾಫಿ / ಟೀ', timing: 'All Day' }
     };
 
-    // Default local fallback dataset
+    // Default Fallback Menu (Item Codes match Petpooja Master)
     const FALLBACK_MENU = [
       { id: 'idly-2', petpooja_code: '101', category: 'breakfast', name_en: 'Idly (2)', name_kn: 'ಇಡ್ಲಿ (2)', price: 40, in_stock: true, badge: '', description: 'Steamed rice cakes with chutney & sambar' },
       { id: 'thatte-idly', petpooja_code: '102', category: 'breakfast', name_en: 'Thatte Idly (1)', name_kn: 'ತಟ್ಟೆ ಇಡ್ಲಿ (1)', price: 40, in_stock: true, badge: '', description: 'Soft plate idly served with podi butter' },
@@ -718,46 +720,17 @@
     ];
 
     async function initMenu() {
-      if (typeof RESTAURANT_CONFIG !== 'undefined') {
-        if (RESTAURANT_CONFIG.RESTAURANT_NAME) {
-          document.getElementById('brandNameHeader').innerText = RESTAURANT_CONFIG.RESTAURANT_NAME;
-          document.getElementById('modalBrandTitle').innerText = RESTAURANT_CONFIG.RESTAURANT_NAME;
-        }
-        if (RESTAURANT_CONFIG.RESTAURANT_SUBTITLE_KN) {
-          document.getElementById('brandSubtitleHeader').innerText = RESTAURANT_CONFIG.RESTAURANT_SUBTITLE_KN;
-        }
-      }
-
       try {
-        if (
-          typeof RESTAURANT_CONFIG === 'undefined' ||
-          !RESTAURANT_CONFIG.GOOGLE_SPREADSHEET_ID ||
-          RESTAURANT_CONFIG.GOOGLE_SPREADSHEET_ID.includes("YOUR_SPREADSHEET_ID")
-        ) {
-          throw new Error("No custom spreadsheet ID configured; using local fallback dataset");
+        if (!GOOGLE_SPREADSHEET_ID || GOOGLE_SPREADSHEET_ID.includes("YOUR_SPREADSHEET_ID")) {
+          throw new Error("Local dataset mode");
         }
-
-        const tabName = RESTAURANT_CONFIG.SHEET_TAB_NAME || "Menu";
-        const apiUrl = `https://opensheet.elk.sh/${RESTAURANT_CONFIG.GOOGLE_SPREADSHEET_ID}/${tabName}?t=${Date.now()}`;
-        
-        console.log("Fetching live menu from:", apiUrl);
-        const res = await fetch(apiUrl, { cache: 'no-store' });
-        
-        if (!res.ok) {
-          throw new Error(`HTTP Error ${res.status}: ${res.statusText}`);
-        }
-
+        const res = await fetch(API_URL);
         const data = await res.json();
-        if (!Array.isArray(data) || data.length === 0) {
-          throw new Error("Sheet returned 0 rows");
-        }
-
+        if (!Array.isArray(data) || data.length === 0) throw new Error("Empty sheet");
         fullMenuData = data;
       } catch (e) {
-        console.warn("Sheet fetch failed, using fallback:", e.message);
         fullMenuData = FALLBACK_MENU;
       }
-
       renderMenu();
     }
 
@@ -767,19 +740,19 @@
 
       const grouped = {};
       fullMenuData.forEach((item, index) => {
-        const dishId = String(item.id || `dish-${index}`).trim();
-        const pCode = String(item.petpooja_code || item.item_code || '101').trim();
-        let cat = String(item.category || 'breakfast').toLowerCase().trim();
+        const dishId = item.id ? item.id.trim() : `item-${index}`;
+        const pCode = item.petpooja_code || item.item_code || '101';
+        let cat = (item.category || 'breakfast').toLowerCase().trim();
         if (!CATEGORY_MAP[cat]) cat = 'breakfast';
 
         const dishData = {
           id: dishId,
           code: pCode,
-          name_en: String(item.name_en || '').trim(),
-          name_kn: String(item.name_kn || '').trim(),
+          name_en: item.name_en.trim(),
+          name_kn: item.name_kn || '',
           price: parseInt(item.price, 10) || 0,
-          badge: String(item.badge || '').trim(),
-          description: String(item.description || '').trim()
+          badge: item.badge || '',
+          description: item.description || ''
         };
 
         if (!grouped[cat]) grouped[cat] = [];
@@ -808,7 +781,7 @@
                 <button class="qty-btn" onclick="updateQty('${dish.id}', 1)">+</button>
               </div>`;
           } else {
-            btnHtml = `<button class="add-btn" onclick="addItemById('${dish.id}')">+ Add</button>`;
+            btnHtml = `<button class="add-btn" onclick="addItem('${dish.id}', '${dish.code}', '${dish.name_en.replace(/'/g, "\\'")}', ${dish.price})">+ Add</button>`;
           }
 
           itemsHtml += `
@@ -859,16 +832,8 @@
       });
     }
 
-    function addItemById(id) {
-      const item = fullMenuData.find(d => String(d.id || '').trim() === id);
-      if (!item) return;
-
-      cart[id] = {
-        code: String(item.petpooja_code || item.item_code || '101').trim(),
-        title: String(item.name_en || '').trim(),
-        price: parseInt(item.price, 10) || 0,
-        qty: 1
-      };
+    function addItem(id, code, title, price) {
+      cart[id] = { code, title, price, qty: 1 };
       refreshCartUI();
     }
 
@@ -880,16 +845,21 @@
     }
 
     // =======================================================
-    // PETPOOJA KEYSTROKE PAYLOAD BUILDER
+    // PETPOOJA SCANNER PAYLOAD BUILDER
     // =======================================================
     function generatePetpoojaKeystrokePayload() {
       const keystrokeSequence = [];
+      
       for (let id in cart) {
         const item = cart[id];
+        // In Petpooja, typing shortcode + ENTER adds 1 unit.
+        // We repeat the code for the quantity ordered.
         for (let i = 0; i < item.qty; i++) {
           keystrokeSequence.push(item.code);
         }
       }
+      
+      // Delimit with CRLF (\r\n) so the scanner triggers an Enter keystroke per code
       return keystrokeSequence.join('\r\n');
     }
 
@@ -900,6 +870,7 @@
       const payload = generatePetpoojaKeystrokePayload();
       if (!payload) return;
 
+      // 180x180 px with Level-M Error correction ensures fast camera pickup on phone screens
       new QRCode(qrContainer, {
         text: payload,
         width: 180,
@@ -968,10 +939,7 @@
     }
 
     function openGoogleReview() {
-      const placeId = (typeof RESTAURANT_CONFIG !== 'undefined' && RESTAURANT_CONFIG.GOOGLE_PLACE_ID) 
-        ? RESTAURANT_CONFIG.GOOGLE_PLACE_ID 
-        : "ChIJIznANwAP6joRsC8ckf6OSuc";
-      const url = `https://search.google.com/local/writereview?placeid=${placeId}`;
+      const url = `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`;
       window.open(url, '_blank');
     }
 
