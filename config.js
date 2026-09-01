@@ -1,18 +1,11 @@
-/**
- * RESTAURANT & CMS CONFIGURATION
- * Edit this file when deploying for a new restaurant or updating the Google Sheet.
- */
-const APP_CONFIG = {
-  // 1. Google Spreadsheet ID (from your public Google Sheet URL)
+const RESTAURANT_CONFIG = {
+  // Paste your actual spreadsheet ID here (replace everything between the quotes)
   GOOGLE_SPREADSHEET_ID: "17cObi5AFpwQspEYFpRl5y2loidPoztLRx21aOQEui3I",
-
-  // 2. Name of the Tab/Sheet inside your spreadsheet (default is "Menu")
-  SHEET_NAME: "Menu",
-
-  // 3. Google Maps Place ID for the review button
+  
+  // Name of the tab at the bottom of the sheet (case-sensitive)
+  SHEET_TAB_NAME: "Menu",
+  
   GOOGLE_PLACE_ID: "ChIJIznANwAP6joRsC8ckf6OSuc",
-
-  // 4. Restaurant Brand Header
   RESTAURANT_NAME: "Annapurna Tiffins",
   RESTAURANT_SUBTITLE_KN: "ಶ್ರೀ ಅನ್ನಪೂರ್ಣ ಟಿಫಿನ್ಸ್ • Fast Self-Service"
 };
