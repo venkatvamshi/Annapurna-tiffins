@@ -711,33 +711,48 @@
     ];
 
     async function initMenu() {
-      // Apply brand header from config if present
-      if (window.APP_CONFIG) {
-        if (APP_CONFIG.RESTAURANT_NAME) {
-          document.getElementById('brandTitleLabel').innerText = APP_CONFIG.RESTAURANT_NAME;
-          document.getElementById('modalBrandLabel').innerText = APP_CONFIG.RESTAURANT_NAME;
+      if (typeof RESTAURANT_CONFIG !== 'undefined') {
+        if (RESTAURANT_CONFIG.RESTAURANT_NAME) {
+          document.getElementById('brandNameHeader').innerText = RESTAURANT_CONFIG.RESTAURANT_NAME;
+          document.getElementById('modalBrandTitle').innerText = RESTAURANT_CONFIG.RESTAURANT_NAME;
         }
-        if (APP_CONFIG.RESTAURANT_SUBTITLE_KN) {
-          document.getElementById('brandSubtitleLabel').innerText = APP_CONFIG.RESTAURANT_SUBTITLE_KN;
+        if (RESTAURANT_CONFIG.RESTAURANT_SUBTITLE_KN) {
+          document.getElementById('brandSubtitleHeader').innerText = RESTAURANT_CONFIG.RESTAURANT_SUBTITLE_KN;
         }
       }
-
+    
       try {
-        const sheetId = window.APP_CONFIG ? APP_CONFIG.GOOGLE_SPREADSHEET_ID : null;
-        const tabName = (window.APP_CONFIG && APP_CONFIG.SHEET_NAME) ? APP_CONFIG.SHEET_NAME : "Menu";
-
-        if (!sheetId || sheetId.includes("YOUR_SPREADSHEET_ID")) {
-          throw new Error("Local fallback dataset mode");
+        if (typeof RESTAURANT_CONFIG === 'undefined') {
+          throw new Error("config.js is not loaded! Make sure <script src='config.js'></script> is before index script.");
         }
-
-        const apiUrl = `https://opensheet.elk.sh/${sheetId}/${tabName}`;
-        const res = await fetch(apiUrl);
+        
+        if (!RESTAURANT_CONFIG.GOOGLE_SPREADSHEET_ID || RESTAURANT_CONFIG.GOOGLE_SPREADSHEET_ID.includes("YOUR_SPREADSHEET_ID")) {
+          throw new Error("Google Spreadsheet ID is not set in config.js");
+        }
+    
+        const tabName = RESTAURANT_CONFIG.SHEET_TAB_NAME || "Menu";
+        const apiUrl = `https://opensheet.elk.sh/${RESTAURANT_CONFIG.GOOGLE_SPREADSHEET_ID}/${tabName}?t=${Date.now()}`;
+        
+        console.log("Fetching menu from:", apiUrl);
+        const res = await fetch(apiUrl, { cache: 'no-store' });
+        
+        if (!res.ok) {
+          throw new Error(`HTTP Error ${res.status}: ${res.statusText}`);
+        }
+    
         const data = await res.json();
-        if (!Array.isArray(data) || data.length === 0) throw new Error("Empty sheet data");
+        console.log("Sheet data received:", data);
+    
+        if (!Array.isArray(data) || data.length === 0) {
+          throw new Error("Sheet returned empty rows. Check tab name and header column row.");
+        }
+    
         fullMenuData = data;
       } catch (e) {
+        console.error("🔴 Menu fetch failed:", e.message);
         fullMenuData = FALLBACK_MENU;
       }
+    
       renderMenu();
     }
 
