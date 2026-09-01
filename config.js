@@ -4,7 +4,7 @@
  */
 const APP_CONFIG = {
   // 1. Google Spreadsheet ID (from your public Google Sheet URL)
-  GOOGLE_SPREADSHEET_ID: "YOUR_SPREADSHEET_ID_HERE",
+  GOOGLE_SPREADSHEET_ID: "17cObi5AFpwQspEYFpRl5y2loidPoztLRx21aOQEui3I",
 
   // 2. Name of the Tab/Sheet inside your spreadsheet (default is "Menu")
   SHEET_NAME: "Menu",
