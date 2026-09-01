@@ -508,7 +508,7 @@
       background: #ffffff;
       padding: 14px;
       border-radius: 12px;
-      margin: 12px 0 8px 0;
+      margin: 12px 0 4px 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -576,6 +576,46 @@
       gap: 6px;
       margin-top: 8px;
     }
+
+    /* Error / Site Broken State */
+    .broken-state-card {
+      background: #fff;
+      border: 2px solid #ef4444;
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      margin-top: 1rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .broken-state-title {
+      color: #b91c1c;
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .broken-state-text {
+      color: #64748b;
+      font-size: 0.88rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: #25d366;
+      color: white;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.5rem;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+    }
   </style>
 </head>
 <body>
@@ -594,33 +634,38 @@
 
   <main class="app-layout">
 
-    <div class="helper-tip">
-      <span>⚡</span>
-      <span>Add your breakfast items & show the <strong>Fast Scan QR</strong> to the cashier gun!</span>
+    <div id="mainAppContent">
+      <div class="helper-tip">
+        <span>⚡</span>
+        <span>Add your breakfast items & show the <strong>Fast Scan QR</strong> to the cashier gun!</span>
+      </div>
+
+      <div class="search-wrapper">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search dosa, idly, coffee..." onkeyup="filterMenu()" />
+      </div>
+
+      <nav class="categories-nav" id="categoryNav">
+        <button class="cat-pill active" onclick="selectCategory('all', this)">All Items</button>
+        <button class="cat-pill" onclick="selectCategory('breakfast', this)">Breakfast</button>
+        <button class="cat-pill" onclick="selectCategory('dosa', this)">Dosas</button>
+        <button class="cat-pill" onclick="selectCategory('special-dosa', this)">Specials</button>
+        <button class="cat-pill" onclick="selectCategory('beverages', this)">Beverages</button>
+      </nav>
+
+      <div id="menuContainer"></div>
+
+      <div class="review-action-card">
+        <div style="font-size: 1.25rem;">⭐ ⭐ ⭐ ⭐ ⭐</div>
+        <div style="font-weight: 800; font-size: 0.92rem; color: #78350f;">Enjoying our tiffins?</div>
+        <button class="google-btn" id="reviewBtn" onclick="openGoogleReview()">
+          <span>Rate us on Google Maps (Auto-Copies Review)</span>
+        </button>
+      </div>
     </div>
 
-    <div class="search-wrapper">
-      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" id="searchInput" class="search-input" placeholder="Search dosa, idly, coffee..." onkeyup="filterMenu()" />
-    </div>
-
-    <nav class="categories-nav" id="categoryNav">
-      <button class="cat-pill active" onclick="selectCategory('all', this)">All Items</button>
-      <button class="cat-pill" onclick="selectCategory('breakfast', this)">Breakfast</button>
-      <button class="cat-pill" onclick="selectCategory('dosa', this)">Dosas</button>
-      <button class="cat-pill" onclick="selectCategory('special-dosa', this)">Specials</button>
-      <button class="cat-pill" onclick="selectCategory('beverages', this)">Beverages</button>
-    </nav>
-
-    <div id="menuContainer"></div>
-
-    <div class="review-action-card">
-      <div style="font-size: 1.25rem;">⭐ ⭐ ⭐ ⭐ ⭐</div>
-      <div style="font-weight: 800; font-size: 0.92rem; color: #78350f;">Enjoying our tiffins?</div>
-      <button class="google-btn" onclick="openGoogleReview()">
-        <span>Rate us on Google Maps</span>
-      </button>
-    </div>
+    <!-- Error State Container -->
+    <div id="errorContainer" style="display: none;"></div>
 
   </main>
 
@@ -660,10 +705,6 @@
         <div class="qr-frame-wrapper">
           <div id="orderQrCanvas"></div>
         </div>
-
-        <div style="font-size:0.72rem; color:#475569; font-weight:700;">
-          Auto-types items into Petpooja POS
-        </div>
       </div>
 
       <!-- Itemized Bill Breakdown -->
@@ -696,6 +737,7 @@
     const GOOGLE_SPREADSHEET_ID = "17cObi5AFpwQspEYFpRl5y2loidPoztLRx21aOQEui3I"; 
     const API_URL = `https://opensheet.elk.sh/${GOOGLE_SPREADSHEET_ID}/Menu`;
     const GOOGLE_PLACE_ID = "ChIJIznANwAP6joRsC8ckf6OSuc";
+    const SUPPORT_WHATSAPP_NUMBER = "919999999999"; // Replace with your WhatsApp contact number (with country code)
 
     const cart = {};
     let fullMenuData = [];
@@ -708,30 +750,45 @@
       'beverages': { title: 'Beverages', kn: 'ಕಾಫಿ / ಟೀ', timing: 'All Day' }
     };
 
-    // Default Fallback Menu (Item Codes match Petpooja Master)
-    const FALLBACK_MENU = [
-      { id: 'idly-2', petpooja_code: '101', category: 'breakfast', name_en: 'Idly (2)', name_kn: 'ಇಡ್ಲಿ (2)', price: 40, in_stock: true, badge: '', description: 'Steamed rice cakes with chutney & sambar' },
-      { id: 'thatte-idly', petpooja_code: '102', category: 'breakfast', name_en: 'Thatte Idly (1)', name_kn: 'ತಟ್ಟೆ ಇಡ್ಲಿ (1)', price: 40, in_stock: true, badge: '', description: 'Soft plate idly served with podi butter' },
-      { id: 'ghee-podi-idly', petpooja_code: '103', category: 'breakfast', name_en: 'Ghee Podi Idly', name_kn: 'ಗೀ ಪೊಡಿ ಇಡ್ಲಿ', price: 70, in_stock: true, badge: 'Popular', description: 'Tossed in pure ghee and spicy podi' },
-      { id: 'masala-dosa', petpooja_code: '201', category: 'dosa', name_en: 'Masala Dosa', name_kn: 'ಮಸಾಲ ದೋಸೆ', price: 80, in_stock: true, badge: 'Bestseller', description: 'Crispy ghee roasted dosa with potato filling' },
-      { id: 'ghee-podi-masala', petpooja_code: '202', category: 'dosa', name_en: 'Ghee Podi Masala Dosa', name_kn: 'ಗೀ ಪೊಡಿ ಮಸಾಲ ದೋಸೆ', price: 120, in_stock: true, badge: 'Special', description: 'Layered with spiced podi and potato bhaji' },
-      { id: 'coffee', petpooja_code: '801', category: 'beverages', name_en: 'Filter Coffee', name_kn: 'ಫಿಲ್ಟರ್ ಕಾಫಿ', price: 25, in_stock: true, badge: 'Degree Coffee', description: 'Authentic South Indian degree filter coffee' },
-      { id: 'tea', petpooja_code: '802', category: 'beverages', name_en: 'Tea', name_kn: 'ಟೀ', price: 20, in_stock: true, badge: '', description: 'Hot brewed masala tea' }
-    ];
-
     async function initMenu() {
       try {
         if (!GOOGLE_SPREADSHEET_ID || GOOGLE_SPREADSHEET_ID.includes("YOUR_SPREADSHEET_ID")) {
-          throw new Error("Local dataset mode");
+          throw new Error("Spreadsheet ID is unconfigured.");
         }
         const res = await fetch(API_URL);
+        if (!res.ok) throw new Error(`Server returned HTTP ${res.status}`);
+        
         const data = await res.json();
-        if (!Array.isArray(data) || data.length === 0) throw new Error("Empty sheet");
+        if (!Array.isArray(data) || data.length === 0) throw new Error("Menu returned empty rows.");
+        
         fullMenuData = data;
-      } catch (e) {
-        fullMenuData = FALLBACK_MENU;
+        renderMenu();
+      } catch (err) {
+        console.error("Critical: Menu failed to load:", err.message);
+        renderSiteBrokenState(err.message);
       }
-      renderMenu();
+    }
+
+    function renderSiteBrokenState(errorMessage) {
+      document.getElementById('mainAppContent').style.display = 'none';
+      const errorContainer = document.getElementById('errorContainer');
+      errorContainer.style.display = 'block';
+
+      const waMessage = encodeURIComponent(`Hi, the Annapurna Tiffins online menu is currently broken/down. Error details: ${errorMessage}`);
+      const waUrl = `https://wa.me/${SUPPORT_WHATSAPP_NUMBER}?text=${waMessage}`;
+
+      errorContainer.innerHTML = `
+        <div class="broken-state-card">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
+          <div class="broken-state-title">Menu Temporarily Unavailable</div>
+          <p class="broken-state-text">
+            We are having trouble connecting to our live menu system. Please place your order directly at the counter or report this issue so we can fix it immediately.
+          </p>
+          <a href="${waUrl}" target="_blank" class="whatsapp-btn">
+            <span>💬 Report Issue on WhatsApp</span>
+          </a>
+        </div>
+      `;
     }
 
     function renderMenu() {
@@ -849,17 +906,12 @@
     // =======================================================
     function generatePetpoojaKeystrokePayload() {
       const keystrokeSequence = [];
-      
       for (let id in cart) {
         const item = cart[id];
-        // In Petpooja, typing shortcode + ENTER adds 1 unit.
-        // We repeat the code for the quantity ordered.
         for (let i = 0; i < item.qty; i++) {
           keystrokeSequence.push(item.code);
         }
       }
-      
-      // Delimit with CRLF (\r\n) so the scanner triggers an Enter keystroke per code
       return keystrokeSequence.join('\r\n');
     }
 
@@ -870,7 +922,6 @@
       const payload = generatePetpoojaKeystrokePayload();
       if (!payload) return;
 
-      // 180x180 px with Level-M Error correction ensures fast camera pickup on phone screens
       new QRCode(qrContainer, {
         text: payload,
         width: 180,
@@ -938,9 +989,26 @@
       if (e.target.id === 'orderSlipModal') closeSlipModal();
     }
 
+    // Auto-Copy positive review text and navigate to Google review page
     function openGoogleReview() {
-      const url = `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`;
-      window.open(url, '_blank');
+      const reviewText = "Authentic, hygienic, and delicious South Indian breakfast! The Thatte Idly and Masala Dosa are crisp and full of authentic flavor. Super fast and clean self-service experience.";
+      
+      const btn = document.getElementById('reviewBtn');
+      const originalText = btn.innerHTML;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(reviewText).then(() => {
+          btn.innerHTML = `<span>📋 Review Copied! Opening Google Maps...</span>`;
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            window.open(`https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`, '_blank');
+          }, 800);
+        }).catch(() => {
+          window.open(`https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`, '_blank');
+        });
+      } else {
+        window.open(`https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`, '_blank');
+      }
     }
 
     window.addEventListener('DOMContentLoaded', initMenu);
