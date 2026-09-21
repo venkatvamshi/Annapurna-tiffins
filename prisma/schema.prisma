@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Restaurant {
+  id           String       @id @default(cuid())
+  slug         String       @unique
+  name         String
+  nameKn       String?
+  subtitle     String?
+  placeId      String?
+  supportPhone String?
+  isActive     Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  users        User[]
+  categories   Category[]
+  menuItems    MenuItem[]
+  promotions   Promotion[]
+}
+
+model User {
+  id           String      @id @default(cuid())
+  username     String      @unique
+  passwordHash String
+  role         String      // "SUPERADMIN" or "OWNER"
+  restaurantId String?
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model Category {
+  id           String      @id @default(cuid())
+  restaurantId String
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  slug         String
+  title        String
+  titleKn      String?
+  timing       String?
+  sortOrder    Int         @default(0)
+  items        MenuItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@unique([restaurantId, slug])
+}
+
+model MenuItem {
+  id           String      @id @default(cuid())
+  restaurantId String
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  categoryId   String
+  category     Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  code         String      // Petpooja shortcode
+  nameEn       String
+  nameKn       String?
+  description  String?
+  price        Int
+  badge        String?
+  isAvailable  Boolean     @default(true) // 1-tap live stock toggle
+  isSpecial    Boolean     @default(false)
+  sortOrder    Int         @default(0)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@unique([restaurantId, code])
+}
+
+model Promotion {
+  id                 String      @id @default(cuid())
+  restaurantId       String?     // NULL = global platform developer ad; non-null = restaurant special
+  restaurant         Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  type               String      // "SPECIAL_DISH" or "HYPERLOCAL_AD"
+  title              String
+  subtitle           String?
+  badge              String?
+  description        String?
+  imageUrl           String?
+  primaryBtnText     String?
+  primaryBtnAction   String?     // e.g., "ADD_ITEM:item_id" or "URL:https://..."
+  secondaryBtnText   String?
+  secondaryBtnAction String?
+  isActive           Boolean     @default(true)
+  priority           Int         @default(0)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+}
