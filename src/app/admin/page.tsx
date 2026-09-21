@@ -114,6 +114,64 @@ export default function OwnerDashboardPage() {
   // Segmented view: 'menu' (fast counter stock/prices) or 'promo' (spotlight special)
   const [adminTab, setAdminTab] = useState<'menu' | 'promo'>('menu');
 
+  // Change Password state
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null);
+  const [savingPassword, setSavingPassword] = useState(false);
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordError(null);
+    setPasswordSuccess(null);
+
+    if (!currentPassword) {
+      setPasswordError('Please enter your current password.');
+      return;
+    }
+    if (!newPassword) {
+      setPasswordError('Please enter a new password.');
+      return;
+    }
+    if (newPassword.length < 6) {
+      setPasswordError('New password must be at least 6 characters long.');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordError('New password and confirmation do not match.');
+      return;
+    }
+
+    setSavingPassword(true);
+    try {
+      const res = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const resJson = await res.json();
+      if (!res.ok) {
+        setPasswordError(resJson.error || 'Failed to update password.');
+        return;
+      }
+      setPasswordSuccess('Password updated successfully!');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+      setTimeout(() => {
+        setIsChangePasswordOpen(false);
+        setPasswordSuccess(null);
+      }, 1400);
+    } catch {
+      setPasswordError('Network error. Please try again.');
+    } finally {
+      setSavingPassword(false);
+    }
+  };
+
   // PWA install prompt state
   const [installPrompt, setInstallPrompt] = useState<{ prompt: () => void; userChoice: Promise<{ outcome: string }> } | null>(null);
   const [installed, setInstalled] = useState(false);
@@ -585,21 +643,48 @@ export default function OwnerDashboardPage() {
           </div>
         </div>
 
-        <button
-          onClick={handleLogout}
-          style={{
-            background: 'var(--surface-warm)',
-            border: '1px solid var(--border)',
-            padding: '5px 10px',
-            borderRadius: 'var(--radius-sm)',
-            fontSize: '0.78rem',
-            fontWeight: 700,
-            cursor: 'pointer',
-            color: 'var(--text-muted)',
-          }}
-        >
-          Logout
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <button
+            onClick={() => {
+              setIsChangePasswordOpen(true);
+              setPasswordError(null);
+              setPasswordSuccess(null);
+            }}
+            style={{
+              background: 'var(--surface-warm)',
+              border: '1px solid var(--border)',
+              padding: '5px 9px',
+              borderRadius: 'var(--radius-sm)',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              color: 'var(--text-main)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+            }}
+            title="Change Account Password"
+          >
+            <span>🔑</span>
+            <span>Password</span>
+          </button>
+
+          <button
+            onClick={handleLogout}
+            style={{
+              background: 'var(--surface-warm)',
+              border: '1px solid var(--border)',
+              padding: '5px 10px',
+              borderRadius: 'var(--radius-sm)',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              color: 'var(--text-muted)',
+            }}
+          >
+            Logout
+          </button>
+        </div>
       </header>
 
       <div style={{ width: '100%', maxWidth: '540px', margin: '0 auto', padding: '0.85rem 0.75rem', boxSizing: 'border-box' }}>
@@ -1512,6 +1597,167 @@ export default function OwnerDashboardPage() {
                 Cancel
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Change Password Modal */}
+      {isChangePasswordOpen && (
+        <div className="modal-backdrop" onClick={() => !savingPassword && setIsChangePasswordOpen(false)}>
+          <div
+            className="modal-sheet"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: '420px', width: '100%', boxSizing: 'border-box' }}
+          >
+            <div className="modal-top">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '1.25rem' }}>🔑</span>
+                <div>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800 }}>Account Security</h3>
+                  <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>Change Owner Portal Password</span>
+                </div>
+              </div>
+              <button
+                className="btn-close"
+                onClick={() => !savingPassword && setIsChangePasswordOpen(false)}
+                disabled={savingPassword}
+              >
+                ✕
+              </button>
+            </div>
+
+            {passwordError && (
+              <div
+                style={{
+                  background: '#fef2f2',
+                  border: '1px solid #fecaca',
+                  color: '#991b1b',
+                  padding: '8px 12px',
+                  borderRadius: '10px',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  marginBottom: '1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
+              >
+                <span>⚠️</span>
+                <span>{passwordError}</span>
+              </div>
+            )}
+
+            {passwordSuccess && (
+              <div
+                style={{
+                  background: '#f0fdf4',
+                  border: '1px solid #bbf7d0',
+                  color: '#15803d',
+                  padding: '8px 12px',
+                  borderRadius: '10px',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  marginBottom: '1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
+              >
+                <span>✅</span>
+                <span>{passwordSuccess}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleChangePassword}>
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '4px' }}>
+                  Current Password *
+                </label>
+                <input
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="Enter current password"
+                  required
+                  disabled={savingPassword}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    borderRadius: '10px',
+                    border: '1.5px solid var(--border)',
+                    background: 'var(--surface-warm)',
+                    fontSize: '0.92rem',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '4px' }}>
+                  New Password * (min. 6 characters)
+                </label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Enter new strong password"
+                  required
+                  disabled={savingPassword}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    borderRadius: '10px',
+                    border: '1.5px solid var(--border)',
+                    background: 'var(--surface-warm)',
+                    fontSize: '0.92rem',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '1.25rem' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '4px' }}>
+                  Confirm New Password *
+                </label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Re-enter new password"
+                  required
+                  disabled={savingPassword}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    borderRadius: '10px',
+                    border: '1.5px solid var(--border)',
+                    background: 'var(--surface-warm)',
+                    fontSize: '0.92rem',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => setIsChangePasswordOpen(false)}
+                  disabled={savingPassword}
+                  style={{ flex: 1, padding: '0.85rem', borderRadius: '12px' }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn-primary"
+                  disabled={savingPassword}
+                  style={{ flex: 2, padding: '0.85rem', borderRadius: '12px' }}
+                >
+                  {savingPassword ? 'Updating...' : 'Save New Password'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
